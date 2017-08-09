@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#singularity exec --bind /opt/torque --bind /opt/sdsc/lib scbatch.img bash
+
+singularity exec scbatch.img bash
+

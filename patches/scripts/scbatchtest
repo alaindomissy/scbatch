@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -o xtrace
+set -o nounset
+
+IMAGE=scbatch.img
+TESTDIR=SCBATCH_TEST
+
+mkdir ${TESTDIR}
+cd    ${TESTDIR}
+
+#scbatch
+

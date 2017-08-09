@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+source activate ruvseq-1.8.0
+
+scbatch_notebook
+

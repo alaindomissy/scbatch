@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+source activate combatpy-0.0.1_20170804
+
+scbatch_notebook
+

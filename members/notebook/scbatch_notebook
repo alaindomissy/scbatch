@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+set -o xtrace
+set -o nounset
+set -o errexit
+#set -o pipefail
+
+
+JUPYTER_CONFIG_DIR=$(pwd)
+export JUPYTER_CONFIG_DIR
+
+cp -rn /opt/patches/jupyter   ${JUPYTER_CONFIG_DIR}/.jupyter
+
+jupyter notebook --no-browser --NotebookApp.ip=$(hostname -i)
+

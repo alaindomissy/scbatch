@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+source activate seurat-2.0.0
+bash
+

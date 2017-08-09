@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+source activate scran-1.4.5
+bash
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# if you want to bind some host directories...
+# export SINGULARTY_BINDPATH=/some,/dirs,/to,/bind
+
+# set -x
+
+DIR=$(dirname  "$0")
+CMD=$(basename "$0")
+ARG="$@"
+
+#singularity exec --bind /opt/torque --bind /opt/sdsc/lib $DIR/scbatch.img $CMD $ARG
+
+#--home ../SCBATCH_HOME --workdir ../SCBATCH_HOME
+
+singularity exec --cleanenv  $DIR/../scbatch.img $CMD $ARG
+
+# set +x
+
+

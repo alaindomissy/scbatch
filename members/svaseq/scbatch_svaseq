@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+source activate svaseq-3.20.0
+bash
+

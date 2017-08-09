@@ -1,0 +1,10 @@
+#!//usr/bin/env bash
+
+#export PATH=$(pwd):$PATH
+
+# get the full absolute pathname for this file no matter where it is called from
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+export PATH=$DIR/commands:$PATH
+
+
