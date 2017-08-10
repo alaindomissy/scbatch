@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source activate scran-1.4.5
+source activate scran    #-1.4.5
 
 scbatch_notebook
 

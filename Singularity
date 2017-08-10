@@ -244,28 +244,28 @@ From:  ubuntu:16.04
   touch /opt/done_with_scran
 
   ########
-  # SEURAT
-  conda create --yes -n seurat-2.0.0 -c r \
+  # SEURAT 2.0.0
+  conda create --yes -n seurat -c r \
     r-devtools=1.13.2 \
     r-irkernel=0.7.1
-  conda env export -n seurat-2.0.0 > /opt/condaenv_seurat-2.0.0_0.yaml
+  conda env export -n seurat > /opt/condaenv_seurat_0.yaml
 
-  /opt/conda/envs/seurat-2.0.0/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
-  /opt/conda/envs/seurat-2.0.0/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'seurat', displayname = 'seurat-2.0.0_R 3.4')"
+  /opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
+  /opt/conda/envs/seurat/bin/R --no-restore --no-save -e \
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'seurat', displayname = 'seurat_R 3.4')"
 
   touch /opt/done_with_seurat
 
   ########
-  # SVASEQ 3.20.0
+  # SVASEQ 1.8.0
   conda create --yes -n svaseq -c bioconda -c r \
     bioconductor-sva=3.20.0 \
     r-devtools=1.12.0 \
     r-irkernel=0.7.1
   conda env export -n svaseq > /opt/condaenv_svaseq_0.yaml
 
-  # /opt/conda/envs/svaseq-1.8.0/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces(); q()"
-  /opt/conda/envs/svaseq-1.8.0/bin/R --no-restore --no-save -e \
+  # /opt/conda/envs/svaseq/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces(); q()"
+  /opt/conda/envs/svaseq/bin/R --no-restore --no-save -e \
      "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'svaseq', displayname = 'svaseq_R 3.3')"
 
   touch /opt/done_with_svaseq

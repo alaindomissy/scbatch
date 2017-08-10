@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-source activate limma-3.30.13
+source activate limma    #-3.30.13
 
 scbatch_notebook
 
