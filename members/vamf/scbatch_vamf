@@ -1,5 +1,5 @@
 #!/usr/bin/bash
 
-source activate vamf-0.0.1_20170804
+source activate vamf    # -0.0.1_20170804
 bash
 

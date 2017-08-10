@@ -1,5 +1,5 @@
 #!/usr/bin/bash
 
-source activate scnorm-0.7.27
+source activate scnorm    # -0.7.27
 bash
 

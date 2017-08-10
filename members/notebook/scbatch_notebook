@@ -9,7 +9,13 @@ set -o errexit
 JUPYTER_CONFIG_DIR=$(pwd)
 export JUPYTER_CONFIG_DIR
 
-cp -rn /opt/patches/jupyter   ${JUPYTER_CONFIG_DIR}/.jupyter
+# cp -rn /opt/patches/jupyter   ${JUPYTER_CONFIG_DIR}/.jupyter
 
-jupyter notebook --no-browser --NotebookApp.ip=$(hostname -i)
+
+# see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
+
+jupyter notebook \
+    --no-browser \
+    --NotebookApp.ip=$(hostname -i) \
+    --NotebookApp.password=u'sha1:6c2164fc2b22:ed55ecf07fc0f985ab46561483c0e888e8964ae6'
 

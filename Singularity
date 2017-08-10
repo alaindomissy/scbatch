@@ -116,8 +116,8 @@ From:  ubuntu:16.04
 
 
   ########
-  # BASICS
-  conda create --yes -n basics-0.7.27 -c r \
+  # BASICS 0.7.27
+  conda create --yes -n basics -c r \
     r-base=3.3.2
   #conda create -n basics-0.7.27 -c r r-base=3.3.2 r-recommended=3.3.2 r-devtools=1.12.0
       # conda install -c bioconda bioconductor-biobase=2.34.0
@@ -132,20 +132,21 @@ From:  ubuntu:16.04
       #biocLite("scran")
       ##### install.packages("Rcpp")  ### ALREADY DONE WIH CONDA
 
-  conda env export -n basics-0.7.27 > /opt/condaenv_basics-0.7.27_0.yaml
+  conda env export -n basics > /opt/condaenv_basics.yaml
 
-  #/opt/conda/envs/basics-0.7.27/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
+  #/opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
 
+  touch /opt/done_with_basics
 
   ##########
-  # COMBATPY
+  # COMBATPY 0.0.1_20170804
   #conda create --yes -n combatpy-0.0.1_20170804  -c bioconda -c r \
   #  bioconductor-sva=3.20.0 \
   #  bioconductor-biocinstaller=1.24.0 \
   #  python=2.7 \
   #  pandas=0.20.3 \
   #  patsy=0.4.1
-  conda create --yes -n combatpy-0.0.1_20170804  -c bioconda -c r \
+  conda create --yes -n combatpy  -c bioconda -c r \
     bioconductor-sva=3.20.0 \
     bioconductor-biocinstaller=1.24.0 \
     r-devtools \
@@ -154,49 +155,52 @@ From:  ubuntu:16.04
     patsy \
     python=3 \
     jupyter
-  conda env export -n combatpy-0.0.1_20170804 > /opt/condaenv_combatpy-0.0.20170804_0.yaml
+  conda env export -n combatpy > /opt/condaenv_combatpy-0.0.20170804_0.yaml
 
-  /opt/conda/envs/combatpy-0.0.1_20170804/bin/R --no-restore --no-save -e \
+  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
     "library(BiocInstaller); biocLite('bladderbatch')"
-  /opt/conda/envs/combatpy-0.0.1_20170804/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'combatpy-0.0.1_20170804_ir33', displayname = 'combatpy-0.0.1_20170804_R 3.3');"
+  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'combatpy', displayname = 'combatpy_R 3.3');"
 
   #git clone https://github.com/brentp/combat.py.git /opt/members/combatpy/repo/
 
+  touch /opt/done_with_combatpy
 
   #######
-  # LIMMA
-  conda create --yes -n limma-3.30.13 -c bioconda -c r \
+  # LIMMA 3.30.13
+  conda create --yes -n limma -c bioconda -c r \
     r-devtools=1.12.0 \
     r-irkernel=0.7.1 \
     bioconductor-limma=3.30.13 \
     python=3 \
     jupyter
-  conda env export -n limma-3.30.13 > /opt/condaenv_limma-3.30.13_0.yaml
+  conda env export -n limma > /opt/condaenv_limma_0.yaml
 
-  #/opt/conda/envs/limma-3.30.13/bin/R --no-restore --no-save -e "library(limma);"
+  #/opt/conda/envs/limma/bin/R --no-restore --no-save -e "library(limma);"
   # "library(); library(limma); loadedNamespaces();"
 
-  /opt/conda/envs/limma-3.30.13/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'limma-3.30.13_ir33', displayname = 'limma-3-30.13_R 3.3');"
-  #/opt/conda/envs/limma-3.30.13/bin/R --no-restore --no-save -e \
-  #   "library(devtools); install_github('IRkernel/IRkernel'); library(IRkernel); installspec(name = 'limma-3.30.13_ir33', displayname = 'limma-3-30.13_R 3.3');"
+  /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'limma_ir33', displayname = 'limma-3-30.13_R 3.3');"
+  /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
+     "library(devtools); install_github('IRkernel/IRkernel'); library(IRkernel); installspec(name = 'limma', displayname = 'limma-3-30.13_R 3.3');"
 
+  touch /opt/done_with_limma
 
   ########
-  # RUVSEQ
-  conda create --yes -n ruvseq-1.8.0 -c bioconda -c pjones -c r \
+  # RUVSEQ 1.8.0
+  conda create --yes -n ruvseq -c bioconda -c pjones -c r \
     bioconductor-edger=3.16.5 \
     bioconductor-edaseq=2.8.0 \
     bioconductor-ruvseq=1.8.0 \
     r-devtools=1.11.1 \
     r-irkernel==0.7
-  conda env export  -n ruvseq-1.8.0 > /opt/condaenv_ruvseq-1.8.0_0.yaml
+  conda env export -n ruvseq > /opt/condaenv_ruvseq_0.yaml
 
-  #/opt/conda/envs/ruvseq-1.8.0/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces()"
-  /opt/conda/envs/ruvseq-1.8.0SC  /bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'ruvseq-1.8.0_ir33', displayname = 'ruvseq-1.8.0_R 3.3');"
+  #/opt/conda/envs/ruvseq/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces()"
+  /opt/conda/envs/ruvseq/bin/R --no-restore --no-save -e \
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'ruvseq', displayname = 'ruvseq_R 3.3');"
 
+  touch /opt/done_with_ruvseq
 
   ########
   # SCNORM
@@ -207,8 +211,9 @@ From:  ubuntu:16.04
   conda env export -n scnorm-0.7.27 > /opt/condaenv_scnorm-0.0.20170804_0.yaml
 
   /opt/conda/envs/scnorm-0.7.27/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scnorm-0.7.27_ir33', displayname = 'scnorm-0.7.27_R 3.3');"
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scnorm', displayname = 'scnorm-0.7.27_R 3.3');"
 
+  touch /opt/done_with_scnorm
 
   ########
   # SCRAN
@@ -234,8 +239,9 @@ From:  ubuntu:16.04
   conda env export -n scran-1.4.5 > /opt/condaenv_scran-1.4.5_0.yaml
 
   /opt/conda/envs/scran-1.4.5/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scran-1.4.5_ir33', displayname = 'scran-1.4.5_R 3.3');"
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scran', displayname = 'scran-1.4.5_R 3.3');"
 
+  touch /opt/done_with_scran
 
   ########
   # SEURAT
@@ -246,36 +252,38 @@ From:  ubuntu:16.04
 
   /opt/conda/envs/seurat-2.0.0/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
   /opt/conda/envs/seurat-2.0.0/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'seurat-2.0.0_ir34', displayname = 'seurat-2.0.0_R 3.4')"
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'seurat', displayname = 'seurat-2.0.0_R 3.4')"
 
-
+  touch /opt/done_with_seurat
 
   ########
-  # SVASEQ
-  conda create --yes -n svaseq-3.20.0 -c bioconda -c r \
+  # SVASEQ 3.20.0
+  conda create --yes -n svaseq -c bioconda -c r \
     bioconductor-sva=3.20.0 \
     r-devtools=1.12.0 \
     r-irkernel=0.7.1
-  conda env export -n svaseq-3.20.0 > /opt/condaenv_svaseq-3.20.0_0.yaml
+  conda env export -n svaseq > /opt/condaenv_svaseq_0.yaml
 
-  # /opt/conda/envs/ruvseq-1.8.0/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces(); q()"
-  /opt/conda/envs/ruvseq-1.8.0/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'svaseq-3.20.0_ir33', displayname = 'svaseq-3.20.0_R 3.3')"
+  # /opt/conda/envs/svaseq-1.8.0/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces(); q()"
+  /opt/conda/envs/svaseq-1.8.0/bin/R --no-restore --no-save -e \
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'svaseq', displayname = 'svaseq_R 3.3')"
 
+  touch /opt/done_with_svaseq
 
   ##########
   # VAMF
-  conda create --yes -n vamf-0.0.1_20170804 -c bioconda -c r \
+  conda create --yes -n vamf -c bioconda -c r \
     bioconductor-biocinstaller=1.24.0 \
     r-devtools \
     r-irkernel=0.7.1
-  conda env export -n vamf-0.0.1_20170804 > /opt/condaenv_vamf-0.0.20170804_0.yaml
+  conda env export -n vamf > /opt/condaenv_vamf-0.0.20170804_0.yaml
 
-  /opt/conda/envs/vamf-0.0.1_20170804/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'vamf-0.0.1_20170804_ir33', displayname = 'vamf-0.0.1_20170804_R 3.3')"
+  /opt/conda/envs/vamf/bin/R --no-restore --no-save -e \
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'vamf', displayname = 'vamf_R 3.3')"
 
   #git clone https://github.com/willtownes/vamf-paper.git  /opt/members/vamf/repo/
 
+  touch /opt/done_with_vamf
 
   touch /opt/done_with_members_envs
 
@@ -291,6 +299,8 @@ From:  ubuntu:16.04
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
 
   touch /opt/done_with_conda_export_clean
+
+  chmod +755 -R /opt/*
 
   set +x
 
@@ -367,7 +377,7 @@ From:  ubuntu:16.04
       mv scbatch ./commands/
       cd commands
       ln -sf scbatch scbatch_notebook
-      ln -sf scbatch scbatch_password
+      #ln -sf scbatch scbatch_password
 
       ln -sf scbatch scbatch_basics
       ln -sf scbatch scbatch_combatpy
@@ -391,9 +401,6 @@ From:  ubuntu:16.04
 
       cd -
 
-      # mkdir -p ./SCBATCH_HOME
-      # cp -rf /opt/patches/jupyter   ./.jupyter
-
       echo
       echo ======================
       echo please type:
@@ -410,5 +417,4 @@ From:  ubuntu:16.04
 ###############################################################################
 %test
 
-  # this will be run once upon completion of container building
-  #/opt/test.sh
+  # /opt/tests/test
