@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+source activate fsclvm    # vwersion ?
+bash
+

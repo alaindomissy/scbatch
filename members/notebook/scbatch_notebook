@@ -17,5 +17,6 @@ export JUPYTER_CONFIG_DIR
 jupyter notebook \
     --no-browser \
     --NotebookApp.ip=$(hostname -i) \
-    --NotebookApp.password=u'sha1:6c2164fc2b22:ed55ecf07fc0f985ab46561483c0e888e8964ae6'
+    --NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'
+
 

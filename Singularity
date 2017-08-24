@@ -115,6 +115,12 @@ From:  ubuntu:16.04
   # devtools::install_local('/opt/irkermel-0.8.8');
 
 
+  # MORE ALGOS ?
+
+  # sclvm
+  # ccremover
+
+
   ########
   # BASICS 0.7.27
   conda create --yes -n basics -c r \
@@ -203,21 +209,22 @@ From:  ubuntu:16.04
   touch /opt/done_with_ruvseq
 
   ########
-  # SCNORM
-  conda create --yes -n scnorm-0.7.27 -c bioconda -c r \
+  # SCNORM  1.1.1
+  conda create --yes -n scnorm -c bioconda -c r \
     bioconductor-biocinstaller=1.24.0 \
+    r-argparse=1.0.4 \
     r-devtools=1.12.0 \
     r-irkernel=0.7.1
-  conda env export -n scnorm-0.7.27 > /opt/condaenv_scnorm-0.0.20170804_0.yaml
+  conda env export -n scnorm > /opt/condaenv_scnorm_0.yaml
 
-  /opt/conda/envs/scnorm-0.7.27/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scnorm', displayname = 'scnorm-0.7.27_R 3.3');"
+  /opt/conda/envs/scnorm/bin/R --no-restore --no-save -e \
+     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scnorm', displayname = 'scnorm-1.1.1_R 3.3');"
 
   touch /opt/done_with_scnorm
 
   ########
-  # SCRAN
-  #conda create --yes -n scran-1.4.5 -c r -c bioconda \
+  # SCRAN   1.4.5
+  #conda create --yes -n scran -c r -c bioconda \
   #   r-base=3.4.1 \
   #   r-xml=3.98_1.7 \
   #   r-httpuv=1.3.3 \
@@ -226,7 +233,7 @@ From:  ubuntu:16.04
   #   bioconductor-biocinstaller=1.24.0  \
   #   bioconductor-biomart=2.28.0 \
   #   r-irkernel=0.7.1
-  conda create --yes -n scran-1.4.5 -c r -c bioconda \
+  conda create --yes -n scran -c r -c bioconda \
      r-base=3.3.2 \
      r-xml=3.98_1.5 \
      r-httpuv=1.3.3 \
@@ -236,9 +243,9 @@ From:  ubuntu:16.04
      r-irkernel=0.7.1 \
      bioconductor-biocinstaller  \
      bioconductor-biomart
-  conda env export -n scran-1.4.5 > /opt/condaenv_scran-1.4.5_0.yaml
+  conda env export -n scran > /opt/condaenv_scran_0.yaml
 
-  /opt/conda/envs/scran-1.4.5/bin/R --no-restore --no-save -e \
+  /opt/conda/envs/scran/bin/R --no-restore --no-save -e \
      "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scran', displayname = 'scran-1.4.5_R 3.3');"
 
   touch /opt/done_with_scran
@@ -335,7 +342,7 @@ From:  ubuntu:16.04
 %labels
 
   MAINTAINER alaindomissy@gmail.com
-  VERSION 0.0.0-20170809
+  VERSION 0.0.0-20170824
   BUILD_DATE "${date -Iminutes}"
 
   #############################################################################
@@ -377,7 +384,7 @@ From:  ubuntu:16.04
       mv scbatch ./commands/
       cd commands
       ln -sf scbatch scbatch_notebook
-      #ln -sf scbatch scbatch_password
+      ln -sf scbatch scbatch_password
 
       ln -sf scbatch scbatch_basics
       ln -sf scbatch scbatch_combatpy
@@ -412,7 +419,7 @@ From:  ubuntu:16.04
       echo
 
   else
-      echo
+      echo "scbatch image called with run and some arguments - did you mean to exec instead ?"
   fi
 ###############################################################################
 %test

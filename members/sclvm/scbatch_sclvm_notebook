@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+source activate sclvm    #-0.7.27
+
+scbatch_notebook
+

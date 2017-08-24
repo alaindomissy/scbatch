@@ -209,6 +209,13 @@ c.NotebookApp.ip = os.environ['HOSTIP']
 # The string should be of the form type:salt:hashed-password.
 # c.NotebookApp.password = ''
 
+### AJD ###
+#####################################################################################
+#c.NotebookApp.password = 'sha1:aaef2c3aa43e:8435b8c4201906cd20941f8f33b02af61df98dbe'
+c.NotebookApp.password = "sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9"
+#####################################################################################
+
+
 # The port the notebook server will listen on.
 # c.NotebookApp.port = 8888
 
