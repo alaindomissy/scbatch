@@ -149,7 +149,7 @@ From:  ubuntu:16.04
   MODULE_VERSION="0.7.27"
   MODULE_DESCRIPTION=""
   MODULE_CHANNELS="-c r"
-  MODULE_PACKAGES="bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
   MODULE_RBASEVERSION="rbase-3.3.2"
   conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
