@@ -6,17 +6,19 @@ set -o errexit
 #set -o pipefail
 
 
-JUPYTER_CONFIG_DIR=$(pwd)
+mkdir - p $(pwd)/.jupyter
+JUPYTER_CONFIG_DIR=$(pwd)/.jupyter
 export JUPYTER_CONFIG_DIR
 
-# cp -rn /opt/patches/jupyter   ${JUPYTER_CONFIG_DIR}/.jupyter
-
+#  -n, --no-clobber  do not overwrite an existing file (overrides a previous -i option)
+cp -r --no-clobber /opt/patches/jupyter   ${JUPYTER_CONFIG_DIR}/
 
 # see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
 
 jupyter notebook \
     --no-browser \
-    --NotebookApp.ip=$(hostname -i) \
-    --NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'
+    --NotebookApp.ip=$(hostname -i)
+
+    #--NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'
 
 

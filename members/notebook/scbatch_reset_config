@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+set -o xtrace
+set -o nounset
+set -o errexit
+#set -o pipefail
+
+
+
+mkdir - p $(pwd)/.jupyter
+JUPYTER_CONFIG_DIR=$(pwd)/.jupyter
+export JUPYTER_CONFIG_DIR
+
+cp /opt/patches/jupyter/jupyter_notebook_config.py  ${JUPYTER_CONFIG_DIR}/
+
