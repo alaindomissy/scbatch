@@ -145,17 +145,17 @@ From:  ubuntu:16.04
 #  conda env export -n basics > /opt/condaenv_basics.yaml
 #  touch /opt/done_with_basics
 
-  MODULE_NAME="basics"
-  MODULE_VERSION="0.7.27"
-  MODULE_DESCRIPTION=""
-  MODULE_CHANNELS="-c r"
-  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3.2"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
-  touch /opt/done_with_${MODULE_NAME}
+#  MODULE_NAME="basics"
+#  MODULE_VERSION="0.7.27"
+#  MODULE_DESCRIPTION=""
+#  MODULE_CHANNELS="-c r"
+#  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+#  MODULE_RBASEVERSION="rbase-3.3.2"
+#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+#  touch /opt/done_with_${MODULE_NAME}
 
 #     COMBATPY 0.0.1_20170804
 #    ########################
