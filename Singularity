@@ -183,7 +183,8 @@ From:  ubuntu:16.04
   add_algorithm basics 0.7.27 3.3.2 \
     "" \
     "-c r" \
-    "r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+    "r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 
 ###       COMBATPY 0.0.1_20170804
@@ -229,7 +230,7 @@ From:  ubuntu:16.04
   add_algorithm combatpy 0.0.1_20170804 3.3 \
     "Combatpy." \
     "-c bioconda -c r" \
-    "bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0"
+    "bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0" \
     '/opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller); biocLite('bladderbatch')"'
 
 
@@ -265,7 +266,8 @@ From:  ubuntu:16.04
   add_algorithm limma 3.30.13 3.3.2 \
     "Linear Models for Microarray and RNA-Seq Data" \
     "-c bioconda -c r" \
-    "r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0"
+    "r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 
 #  MODULE_NAME="ruvseq"
@@ -283,8 +285,8 @@ From:  ubuntu:16.04
   add_algorithm ruvseq 1.8.0 3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
-    "bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0"
-
+    "bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 
 
@@ -295,9 +297,8 @@ From:  ubuntu:16.04
   add_algorithm sclvm 0.1.8 3.2.2 \
     "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
     "-c r -c bioconda -c chasehere -c conda-forge" \
-    "hdf5 h5py matplotlib gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-argparse=1.0.4 r-irkernel=0.7.1 python=2.7 jupyter"
+    "hdf5 h5py matplotlib gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-argparse=1.0.4 r-irkernel=0.7.1 python=2.7 jupyter" \
     "/opt/conda/envs/sclvm/bin/pip install scLVM==0.1.8"
-
 
     #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
     # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
@@ -320,7 +321,8 @@ From:  ubuntu:16.04
   add_algorithm scnorm 0.99.7 3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
     "-c bioconda -c r -c kurtwheeler" \
-    MODULE_PACKAGES="r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0"
+    "r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 
 #  MODULE_NAME="scran"
@@ -338,7 +340,8 @@ From:  ubuntu:16.04
   add_algorithm scran 1.4.5 3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data." \
     "-c r -c bioconda " \
-    "r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0"
+    "r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 
 #  MODULE_NAME="seurat"
@@ -378,7 +381,8 @@ From:  ubuntu:16.04
   add_algorithm svaseq 1.8.0 3.3 \
     "Svaseq." \
     "-c bioconda -c r" \
-    "bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+    "bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
+    "echo"
 
 #
 #  MODULE_NAME="vamf"
@@ -396,7 +400,11 @@ From:  ubuntu:16.04
   add_algorithm vamf 0.0.20170804 3.3 \
     "Vamf." \
     "-c bioconda -c r" \
-    "bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+    "bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
+    "echo"
+
+
+
 
   touch /opt/done_with_members_envs
 
