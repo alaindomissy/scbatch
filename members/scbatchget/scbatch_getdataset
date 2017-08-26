@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# echo arguments: ${@}
+
+DATASET=$1
+
+if [ -z "${DATASET}" ]
+then
+  echo missing argument
+  echo usage:
+  echo   eclipgetdataset DATASET
+  echo   DATASET: one of SCBATCHDEMO CSHLSINGLECELL2017
+elif [ ${DATASET} = SCBATCHDEMO ] || [ ${DATASET} = CSHLSINGLECELL2017 ]
+then
+  echo "downloading fastq files for dataset ${DATASET}"
+  rclone copy --config /opt/members/rclone/rclone.conf gcloud:scbatch_dataset/scbatch_dataset_${DATASET}.tar.gz ./
+  tar -xzvf eclip_dataset_${DATASET}.tar.gz
+  mv scbatch_dataset_${DATASET}/* ./
+  rm scbatch_dataset_${DATASET}.tar.gz
+  rmdir scbatch_dataset_${DATASET}
+else
+  echo ${DATASET} is not an available dataset
+  echo please choose among these available datasets:
+  echo SCBATCHDEMO CSHLSINGLECELL2017
+fi
+

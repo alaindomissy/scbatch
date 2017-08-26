@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# echo arguments: ${@}
+
+#set -x
+
+SPECIES=$1
+
+if [ -z "$SPECIES" ]
+then
+  echo missing argument
+  echo usage: 
+  echo   eclipgetreference SPECIES
+  echo   SPECIES: one of GRCh38 hg19 hg19chr19kbp550 mm10 mm9 ce10 dm3 hb27
+elif [ $SPECIES = GRCh38 ] || [ $SPECIES = hg19 ] || [ $SPECIES = hg19chr19kbp550 ] || [ $SPECIES = mm10 ] || [ $SPECIES = mm9 ]  || [ $SPECIES = ce11 ] || [ $SPECIES = ce10 ]  || [ $SPECIES = dm3 ]  || [ $SPECIES = hb27 ]
+then
+  echo "downloading reference data for species $SPECIES"
+  # now using ENV variables for rclone config
+  #rclone copy --config /opt/members/rclone/rclone.conf gcloud:eclip_reference/eclip_reference_${SPECIES}.tar  ./
+  rclone copy gcloud:eclip_reference/eclip_reference_${SPECIES}.tar  ./
+else
+  echo $SPECIES is not an available species
+  echo please choose among these available species:
+  echo GRCh38 hg19 hg19chr19kbp550 mm10 mm9 ce11 ce10 dm3 hb27
+fi
+
+#set +x
+

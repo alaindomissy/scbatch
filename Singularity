@@ -333,7 +333,7 @@ From:  ubuntu:16.04
 %labels
 
   MAINTAINER alaindomissy@gmail.com
-  VERSION 0.0.0-20170824
+  VERSION 0.0.1-20170826
   BUILD_DATE "${date -Iminutes}"
 
   #############################################################################
