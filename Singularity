@@ -114,15 +114,20 @@ From:  ubuntu:16.04
   # TODO replace devtools::install_github('IRkernel/IRkernel') with
   # devtools::install_local('/opt/irkermel-0.8.8');
 
-
-  # MORE ALGOS ?
-
+  # TODO MORE ALGOS ?
   # sclvm
   # ccremover
 
+  # TODO other way to install in R:
+  # /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
+  #   "library(devtools); install_github('IRkernel/IRkernel'); library(IRkernel); installspec(name = 'limma', displayname = 'limma-3-30.13_R 3.3');"
 
-  ########
+  # TODO how to check things out in R
+  # /opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
+
+
   # BASICS 0.7.27
+  ###############
   conda create --yes -n basics -c r \
     r-base=3.3.2
   #conda create -n basics-0.7.27 -c r r-base=3.3.2 r-recommended=3.3.2 r-devtools=1.12.0
@@ -137,160 +142,146 @@ From:  ubuntu:16.04
       #biocLite("BiocGenerics")
       #biocLite("scran")
       ##### install.packages("Rcpp")  ### ALREADY DONE WIH CONDA
-
   conda env export -n basics > /opt/condaenv_basics.yaml
-
-  #/opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
-
   touch /opt/done_with_basics
 
-  ##########
-  # COMBATPY 0.0.1_20170804
-  #conda create --yes -n combatpy-0.0.1_20170804  -c bioconda -c r \
-  #  bioconductor-sva=3.20.0 \
-  #  bioconductor-biocinstaller=1.24.0 \
-  #  python=2.7 \
-  #  pandas=0.20.3 \
-  #  patsy=0.4.1
-  conda create --yes -n combatpy  -c bioconda -c r \
-    bioconductor-sva=3.20.0 \
-    bioconductor-biocinstaller=1.24.0 \
-    r-devtools \
-    r-irkernel \
-    pandas \
-    patsy \
-    python=3 \
-    jupyter
-  conda env export -n combatpy > /opt/condaenv_combatpy-0.0.20170804_0.yaml
+  MODULE_NAME="basics"
+  MODULE_VERSION="0.7.27"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c r"
+  MODULE_PACKAGES="bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
-    "library(BiocInstaller); biocLite('bladderbatch')"
-  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'combatpy', displayname = 'combatpy_R 3.3');"
+#     COMBATPY 0.0.1_20170804
+#    ########################
+##    conda create --yes -n combatpy-0.0.1_20170804  -c bioconda -c r \
+##      bioconductor-sva=3.20.0 \
+##      bioconductor-biocinstaller=1.24.0 \
+##      python=2.7 \
+##      pandas=0.20.3 \
+##      patsy=0.4.1
+#  conda create --yes -n combatpy  -c bioconda -c r \
+#    bioconductor-sva=3.20.0 \
+#    bioconductor-biocinstaller=1.24.0 \
+#    r-devtools \
+#    r-irkernel \
+#    pandas \
+#    patsy \
+#    python=3 \
+#    jupyter
+#  conda env export -n combatpy > /opt/condaenv_combatpy-0.0.20170804_0.yaml
+#  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
+#    "library(BiocInstaller); biocLite('bladderbatch')"
+#  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
+#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'combatpy', displayname = 'combatpy_R 3.3');"
+#  # #git clone https://github.com/brentp/combat.py.git /opt/members/combatpy/repo/
+#  touch /opt/done_with_combatpy
+  MODULE_NAME="combatpy"
+  MODULE_VERSION="0.0.1_20170804"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c bioconda -c r"
+  MODULE_PACKAGES="bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  ###
+  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller); biocLite('bladderbatch')"
+  ###
+  touch /opt/done_with_${MODULE_NAME}
 
-  #git clone https://github.com/brentp/combat.py.git /opt/members/combatpy/repo/
+  MODULE_NAME="limma"
+  MODULE_VERSION="3.30.13"
+  MODULE_DESCRIPTION="Linear Models for Microarray and RNA-Seq Data"
+  MODULE_CHANNELS="-c bioconda -c r"
+  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  touch /opt/done_with_combatpy
+  MODULE_NAME="ruvseq"
+  MODULE_VERSION="1.8.0"
+  MODULE_DESCRIPTION="Remove Unwanted Variation from RNA-Seq Data"
+  MODULE_CHANNELS="-c bioconda -c pjones -c r"
+  MODULE_PACKAGES="bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  #######
-  # LIMMA 3.30.13
-  conda create --yes -n limma -c bioconda -c r \
-    r-devtools=1.12.0 \
-    r-irkernel=0.7.1 \
-    bioconductor-limma=3.30.13 \
-    python=3 \
-    jupyter
-  conda env export -n limma > /opt/condaenv_limma_0.yaml
+  MODULE_NAME="scnorm"
+  MODULE_VERSION="0.99.7"
+  MODULE_DESCRIPTION="robust normalization of single-cell RNA-seq data"
+  MODULE_CHANNELS="-c bioconda -c r -c kurtwheeler"
+  MODULE_PACKAGES="r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.4.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  #/opt/conda/envs/limma/bin/R --no-restore --no-save -e "library(limma);"
-  # "library(); library(limma); loadedNamespaces();"
+  MODULE_NAME="scran"
+  MODULE_VERSION="1.4.5"
+  MODULE_DESCRIPTION="Implements a variety of low-level analyses of single-cell RNA-seq data."
+  MODULE_CHANNELS="-c r -c bioconda "
+  MODULE_PACKAGES="r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'limma_ir33', displayname = 'limma-3-30.13_R 3.3');"
-  /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
-     "library(devtools); install_github('IRkernel/IRkernel'); library(IRkernel); installspec(name = 'limma', displayname = 'limma-3-30.13_R 3.3');"
-
-  touch /opt/done_with_limma
-
-  ########
-  # RUVSEQ 1.8.0
-  conda create --yes -n ruvseq -c bioconda -c pjones -c r \
-    bioconductor-edger=3.16.5 \
-    bioconductor-edaseq=2.8.0 \
-    bioconductor-ruvseq=1.8.0 \
-    r-devtools=1.11.1 \
-    r-irkernel==0.7
-  conda env export -n ruvseq > /opt/condaenv_ruvseq_0.yaml
-
-  #/opt/conda/envs/ruvseq/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces()"
-  /opt/conda/envs/ruvseq/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'ruvseq', displayname = 'ruvseq_R 3.3');"
-
-  touch /opt/done_with_ruvseq
-
-  ########
-  # SCNORM  1.1.1
-  conda create --yes -n scnorm -c bioconda -c r \
-    bioconductor-biocinstaller=1.24.0 \
-    r-argparse=1.0.4 \
-    r-devtools=1.12.0 \
-    r-irkernel=0.7.1
-  conda env export -n scnorm > /opt/condaenv_scnorm_0.yaml
-
-  /opt/conda/envs/scnorm/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scnorm', displayname = 'scnorm-1.1.1_R 3.3');"
-
-  touch /opt/done_with_scnorm
-
-  ########
-  # SCRAN   1.4.5
-  #conda create --yes -n scran -c r -c bioconda \
-  #   r-base=3.4.1 \
-  #   r-xml=3.98_1.7 \
-  #   r-httpuv=1.3.3 \
-  #   r-shiny=1.0.3 \
-  #   r-shinydashboard=0.6.0 \
-  #   bioconductor-biocinstaller=1.24.0  \
-  #   bioconductor-biomart=2.28.0 \
-  #   r-irkernel=0.7.1
-  conda create --yes -n scran -c r -c bioconda \
-     r-base=3.3.2 \
-     r-xml=3.98_1.5 \
-     r-httpuv=1.3.3 \
-     r-shiny \
-     r-shinydashboard \
-     r-devtools \
-     r-irkernel=0.7.1 \
-     bioconductor-biocinstaller  \
-     bioconductor-biomart
-  conda env export -n scran > /opt/condaenv_scran_0.yaml
-
-  /opt/conda/envs/scran/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'scran', displayname = 'scran-1.4.5_R 3.3');"
-
-  touch /opt/done_with_scran
-
-  ########
-  # SEURAT 2.0.0
-  conda create --yes -n seurat -c r \
-    r-devtools=1.13.2 \
-    r-irkernel=0.7.1
-  conda env export -n seurat > /opt/condaenv_seurat_0.yaml
-
+  MODULE_NAME="seurat"
+  MODULE_VERSION="2.0.0"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c r"
+  MODULE_PACKAGES="r-devtools=1.13.2 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.4.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  ###
   /opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
-  /opt/conda/envs/seurat/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'seurat', displayname = 'seurat_R 3.4')"
+  ###
+  touch /opt/done_with_${MODULE_NAME}
 
-  touch /opt/done_with_seurat
+  MODULE_NAME="svaseq"
+  MODULE_VERSION="1.8.0"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c bioconda -c r"
+  MODULE_PACKAGES="bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
-  ########
-  # SVASEQ 1.8.0
-  conda create --yes -n svaseq -c bioconda -c r \
-    bioconductor-sva=3.20.0 \
-    r-devtools=1.12.0 \
-    r-irkernel=0.7.1
-  conda env export -n svaseq > /opt/condaenv_svaseq_0.yaml
-
-  # /opt/conda/envs/svaseq/bin/R --no-restore --no-save -e "library(); library(RUVSeq); loadedNamespaces(); q()"
-  /opt/conda/envs/svaseq/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'svaseq', displayname = 'svaseq_R 3.3')"
-
-  touch /opt/done_with_svaseq
-
-  ##########
-  # VAMF
-  conda create --yes -n vamf -c bioconda -c r \
-    bioconductor-biocinstaller=1.24.0 \
-    r-devtools \
-    r-irkernel=0.7.1
-  conda env export -n vamf > /opt/condaenv_vamf-0.0.20170804_0.yaml
-
-  /opt/conda/envs/vamf/bin/R --no-restore --no-save -e \
-     "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'vamf', displayname = 'vamf_R 3.3')"
-
-  #git clone https://github.com/willtownes/vamf-paper.git  /opt/members/vamf/repo/
-
-  touch /opt/done_with_vamf
+  MODULE_NAME="vamf"
+  MODULE_VERSION="0.0.20170804"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c bioconda -c r"
+  MODULE_PACKAGES="bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="rbase-3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
   touch /opt/done_with_members_envs
 
