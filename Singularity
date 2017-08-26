@@ -126,24 +126,24 @@ From:  ubuntu:16.04
   # /opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
 
 
-  # BASICS 0.7.27
-  ###############
-  conda create --yes -n basics -c r \
-    r-base=3.3.2
-  #conda create -n basics-0.7.27 -c r r-base=3.3.2 r-recommended=3.3.2 r-devtools=1.12.0
-      # conda install -c bioconda bioconductor-biobase=2.34.0
-      ### downgrading     r-base r-devtools  r-recommended:     3.3.2-r3.3.2_0   to   3.3.1-r3.3.1_0
-      # conda install -c bioconda bioconductor-biocgenerics=0.20.0
-      # conda install -c r r-rcpp=0.12.8
-      ### then in R:
-      ##############
-      #library(devtools)
-      #source("http://bioconductor.org/biocLite.R")
-      #biocLite("BiocGenerics")
-      #biocLite("scran")
-      ##### install.packages("Rcpp")  ### ALREADY DONE WIH CONDA
-  conda env export -n basics > /opt/condaenv_basics.yaml
-  touch /opt/done_with_basics
+#  # BASICS 0.7.27
+#  ###############
+#  conda create --yes -n basics -c r \
+#    r-base=3.3.2
+#  #conda create -n basics-0.7.27 -c r r-base=3.3.2 r-recommended=3.3.2 r-devtools=1.12.0
+#      # conda install -c bioconda bioconductor-biobase=2.34.0
+#      ### downgrading     r-base r-devtools  r-recommended:     3.3.2-r3.3.2_0   to   3.3.1-r3.3.1_0
+#      # conda install -c bioconda bioconductor-biocgenerics=0.20.0
+#      # conda install -c r r-rcpp=0.12.8
+#      ### then in R:
+#      ##############
+#      #library(devtools)
+#      #source("http://bioconductor.org/biocLite.R")
+#      #biocLite("BiocGenerics")
+#      #biocLite("scran")
+#      ##### install.packages("Rcpp")  ### ALREADY DONE WIH CONDA
+#  conda env export -n basics > /opt/condaenv_basics.yaml
+#  touch /opt/done_with_basics
 
   MODULE_NAME="basics"
   MODULE_VERSION="0.7.27"
