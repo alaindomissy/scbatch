@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+set -o xtrace
+set -o nounset
+set -o errexit
+#set -o pipefail
+
+
+mkdir -p $(pwd)/.jupyter
+JUPYTER_CONFIG_DIR=$(pwd)/.jupyter
+export JUPYTER_CONFIG_DIR
+export SCBATCH_CONFIG=${JUPYTER_CONFIG_DIR}/jupyter_notebook_config.py
+
+#  -n, --no-clobber  do not overwrite an existing file (overrides a previous -i option)
+cp -r --no-clobber /opt/patches/jupyter/jupyter_notebook_config.py   ${SCBATCH_CONFIG}

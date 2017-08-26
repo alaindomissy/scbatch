@@ -4,7 +4,7 @@ set -o xtrace
 set -o nounset
 
 IMAGE=scbatch.img
-TESTDIR=SCBATCH_TEST
+TESTDIR=TEST
 
 mkdir ${TESTDIR}
 cd    ${TESTDIR}
