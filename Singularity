@@ -145,17 +145,17 @@ From:  ubuntu:16.04
 #  conda env export -n basics > /opt/condaenv_basics.yaml
 #  touch /opt/done_with_basics
 
-#  MODULE_NAME="basics"
-#  MODULE_VERSION="0.7.27"
-#  MODULE_DESCRIPTION=""
-#  MODULE_CHANNELS="-c r"
-#  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="rbase-3.3.2"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
+  MODULE_NAME="basics"
+  MODULE_VERSION="0.7.27"
+  MODULE_DESCRIPTION=""
+  MODULE_CHANNELS="-c r"
+  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
+  MODULE_RBASEVERSION="3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
+  touch /opt/done_with_${MODULE_NAME}
 
 #     COMBATPY 0.0.1_20170804
 #    ########################
@@ -186,11 +186,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION=""
   MODULE_CHANNELS="-c bioconda -c r"
   MODULE_PACKAGES="bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   ###
   /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller); biocLite('bladderbatch')"
   ###
@@ -201,11 +201,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION="Linear Models for Microarray and RNA-Seq Data"
   MODULE_CHANNELS="-c bioconda -c r"
   MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3.2"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   MODULE_NAME="ruvseq"
@@ -213,11 +213,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION="Remove Unwanted Variation from RNA-Seq Data"
   MODULE_CHANNELS="-c bioconda -c pjones -c r"
   MODULE_PACKAGES="bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3.1"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   MODULE_NAME="scnorm"
@@ -225,11 +225,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION="robust normalization of single-cell RNA-seq data"
   MODULE_CHANNELS="-c bioconda -c r -c kurtwheeler"
   MODULE_PACKAGES="r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.4.1"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.4.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   MODULE_NAME="scran"
@@ -237,11 +237,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION="Implements a variety of low-level analyses of single-cell RNA-seq data."
   MODULE_CHANNELS="-c r -c bioconda "
   MODULE_PACKAGES="r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3.2"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3.2"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   MODULE_NAME="seurat"
@@ -249,11 +249,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION=""
   MODULE_CHANNELS="-c r"
   MODULE_PACKAGES="r-devtools=1.13.2 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.4.1"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.4.1"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   ###
   /opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
   ###
@@ -264,11 +264,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION=""
   MODULE_CHANNELS="-c bioconda -c r"
   MODULE_PACKAGES="bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   MODULE_NAME="vamf"
@@ -276,11 +276,11 @@ From:  ubuntu:16.04
   MODULE_DESCRIPTION=""
   MODULE_CHANNELS="-c bioconda -c r"
   MODULE_PACKAGES="bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-  MODULE_RBASEVERSION="rbase-3.3"
-  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} ${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
+  MODULE_RBASEVERSION="3.3"
+  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} rbase=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
   conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
   /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_${MODULE_RBASEVERSION}');"
+    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
   touch /opt/done_with_${MODULE_NAME}
 
   touch /opt/done_with_members_envs
