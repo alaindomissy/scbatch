@@ -99,7 +99,7 @@ From:  ubuntu:16.04
   echo ************************************************************************
   conda create --yes -n notebook python=3.6 notebook=5.0.0
   conda env export -n notebook > /opt/condaenv/notebook-5.0.0.yaml
-  PATH="/opt/conda/envs/notebook-5.0.0/bin:$PATH"
+  PATH="/opt/conda/envs/notebook/bin:$PATH"
   export PATH
   NOTEBOOKKERNELS=/opt/conda/envs/notebook/share/jupyter/kernels/
   echo ************************************************************************
