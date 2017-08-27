@@ -1,10 +1,9 @@
 BootStrap: docker
 From:  ubuntu:16.04
 
-  #############################################################################
-
+  ####
 %setup
-
+  ####
   # initial setups from outside the container
   # this is run from outside the container to start setting it up
 
@@ -22,6 +21,8 @@ From:  ubuntu:16.04
 
   mkdir -p $SINGULARITY_ROOTFS/media/mis
 
+  mkdir -p $SINGULARITY_ROOTFS/opt/condaenv
+  mkdir -p $SINGULARITY_ROOTFS/opt/donewith
   mkdir -p $SINGULARITY_ROOTFS/opt/members
   mkdir -p $SINGULARITY_ROOTFS/opt/patches
 
@@ -29,10 +30,9 @@ From:  ubuntu:16.04
   cp -r ./members/* $SINGULARITY_ROOTFS/opt/members/
   cp -r ./patches/* $SINGULARITY_ROOTFS/opt/patches/
 
-  #############################################################################
-
+  ###
 %post
-
+  ###
   # running post scriptlet
   # this is run inside the container to install all necessary packages
 
@@ -55,7 +55,7 @@ From:  ubuntu:16.04
   # fix for /bin/gtar: not found when running devtools::install_git()
   ln -s /bin/tar /bin/gtar
 
-  touch /opt/done_with_ubuntu
+  touch /opt/donewith/ubuntu
 
   ###########
   # MINICONDA  # instead of having: From: continuumio/miniconda:4.3.11
@@ -91,7 +91,7 @@ From:  ubuntu:16.04
   PATH=/opt/conda/bin:$PATH
   export PATH
 
-  touch /opt/done_with_miniconda
+  touch /opt/donewith/miniconda
 
 
   ##########
@@ -103,7 +103,7 @@ From:  ubuntu:16.04
   PATH="/opt/conda/envs/notebook-5.0.0/bin:$PATH"
   export PATH
 
-  touch /opt/done_with_notebook
+  touch /opt/donewith/notebook
 
 
   ##########
@@ -115,7 +115,6 @@ From:  ubuntu:16.04
   # devtools::install_local('/opt/irkermel-0.8.8');
 
   # TODO MORE ALGOS ?
-  # sclvm
   # ccremover
 
   # TODO other way to install in R:
@@ -124,7 +123,6 @@ From:  ubuntu:16.04
 
   # TODO how to check things out in R
   # /opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
-
 
 
   add_algorithm()
@@ -136,49 +134,13 @@ From:  ubuntu:16.04
     MODULE_CHANNELS=$5
     MODULE_PACKAGES=$6
     MODULE_TOUCHUPS=$7
-
     conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-    conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
+    conda env export -n ${MODULE_NAME} > /opt/condaenv/${MODULE_NAME}.yaml
     /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
       "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-    if [ -n "${MODULE_TOUCHUPS}" ]
-    then
-      ${MODULE_TOUCHUPS}
-    fi
-    touch /opt/done_with_${MODULE_NAME}
+    ${MODULE_TOUCHUPS}
+    touch /opt/donewith/${MODULE_NAME}
   }
-
-
-###  # BASICS 0.7.27
-###  ###############
-###  conda create --yes -n basics -c r \
-###    r-base=3.3.2
-###  #conda create -n basics-0.7.27 -c r r-base=3.3.2 r-recommended=3.3.2 r-devtools=1.12.0
-###      # conda install -c bioconda bioconductor-biobase=2.34.0
-###      ### downgrading     r-base r-devtools  r-recommended:     3.3.2-r3.3.2_0   to   3.3.1-r3.3.1_0
-###      # conda install -c bioconda bioconductor-biocgenerics=0.20.0
-###      # conda install -c r r-rcpp=0.12.8
-###      ### then in R:
-###      ##############
-###      #library(devtools)
-###      #source("http://bioconductor.org/biocLite.R")
-###      #biocLite("BiocGenerics")
-###      #biocLite("scran")
-###      ##### install.packages("Rcpp")  ### ALREADY DONE WIH CONDA
-###  conda env export -n basics > /opt/condaenv_basics.yaml
-###  touch /opt/done_with_basics
-
-#  MODULE_NAME="basics"
-#  MODULE_VERSION="0.7.27"
-#  MODULE_DESCRIPTION=""
-#  MODULE_CHANNELS="-c r"
-#  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3.2"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
 
   add_algorithm basics 0.7.27 3.3.2 \
     "" \
@@ -186,82 +148,23 @@ From:  ubuntu:16.04
     "r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-###       COMBATPY 0.0.1_20170804
-###      ########################
-###  #    conda create --yes -n combatpy-0.0.1_20170804  -c bioconda -c r \
-###  #      bioconductor-sva=3.20.0 \
-###  #      bioconductor-biocinstaller=1.24.0 \
-###  #      python=2.7 \
-###  #      pandas=0.20.3 \
-###  #      patsy=0.4.1
-###    conda create --yes -n combatpy  -c bioconda -c r \
-###      bioconductor-sva=3.20.0 \
-###      bioconductor-biocinstaller=1.24.0 \
-###      r-devtools \
-###      r-irkernel \
-###      pandas \
-###      patsy \
-###      python=3 \
-###      jupyter
-###    conda env export -n combatpy > /opt/condaenv_combatpy-0.0.20170804_0.yaml
-###    /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
-###      "library(BiocInstaller); biocLite('bladderbatch')"
-###    /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e \
-###      "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = 'combatpy', displayname = 'combatpy_R 3.3');"
-###    # #git clone https://github.com/brentp/combat.py.git /opt/members/combatpy/repo/
-###    touch /opt/done_with_combatpy
-
-#  MODULE_NAME="combatpy"
-#  MODULE_VERSION="0.0.1_20170804"
-#  MODULE_DESCRIPTION=""
-#  MODULE_CHANNELS="-c bioconda -c r"
-#  MODULE_PACKAGES="bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  ###
-#  /opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller); biocLite('bladderbatch')"
-#  ###
-#  touch /opt/done_with_${MODULE_NAME}
-
   add_algorithm combatpy 0.0.1_20170804 3.3 \
     "Combatpy." \
     "-c bioconda -c r" \
     "bioconductor-sva=3.20.0 bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 pandas patsy python=3.6.2 jupyter=1.0.0" \
-    '/opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller); biocLite('bladderbatch')"'
+    "echo"
+    #'/opt/conda/envs/combatpy/bin/R --no-restore --no-save -e "library(BiocInstaller)\; biocLite('bladderbatch')"'
 
-
-
-
-  # conda install -c chasehere r-rpython
-  # conda install -c bioconda limix
-  # conda install -c conda-forge gpy
-  add_algorithm fsclvm 1.0.0.dev10 3.2.2 \
-    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
-    " " \
-    "scipy h5py, numpy matplotlib scikit-learn re python=2.7 jupyter" \
-    "/opt/conda/envs/fsclvm/bin/pip install fscLVM==1.0.0.dev10"
-
-    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
-
-
-
-
-#  MODULE_NAME="limma"
-#  MODULE_VERSION="3.30.13"
-#  MODULE_DESCRIPTION="Linear Models for Microarray and RNA-Seq Data"
-#  MODULE_CHANNELS="-c bioconda -c r"
-#  MODULE_PACKAGES="r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3.2"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
+#  # conda install -c chasehere r-rpython
+#  # conda install -c bioconda limix
+#  # conda install -c conda-forge gpy
+#  add_algorithm fsclvm 1.0.0.dev10 3.2.2 \
+#    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
+#    " " \
+#    "scipy h5py numpy matplotlib scikit-learn re python=2.7 jupyter" \
+#    "/opt/conda/envs/fsclvm/bin/pip install fscLVM==1.0.0.dev10"
+#    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
   add_algorithm limma 3.30.13 3.3.2 \
     "Linear Models for Microarray and RNA-Seq Data" \
@@ -269,54 +172,22 @@ From:  ubuntu:16.04
     "r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-#  MODULE_NAME="ruvseq"
-#  MODULE_VERSION="1.8.0"
-#  MODULE_DESCRIPTION="Remove Unwanted Variation from RNA-Seq Data"
-#  MODULE_CHANNELS="-c bioconda -c pjones -c r"
-#  MODULE_PACKAGES="bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3.1"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
-
   add_algorithm ruvseq 1.8.0 3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
     "bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 r-devtools=1.11.1 r-irkernel==0.7 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-
-
-  # conda install -c chasehere r-rpython
-  # conda install -c bioconda limix
-  # conda install -c conda-forge gpy
-  add_algorithm sclvm 0.1.8 3.2.2 \
-    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
-    "-c r -c bioconda -c chasehere -c conda-forge" \
-    "hdf5 h5py matplotlib gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-argparse=1.0.4 r-irkernel=0.7.1 python=2.7 jupyter" \
-    "/opt/conda/envs/sclvm/bin/pip install scLVM==0.1.8"
-
-    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
-
-
-
-
-#  MODULE_NAME="scnorm"
-#  MODULE_VERSION="0.99.7"
-#  MODULE_DESCRIPTION="robust normalization of single-cell RNA-seq data"
-#  MODULE_CHANNELS="-c bioconda -c r -c kurtwheeler"
-#  MODULE_PACKAGES="r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.4.1"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
+#  # conda install -c chasehere r-rpython
+#  # conda install -c bioconda limix
+#  # conda install -c conda-forge gpy
+#  add_algorithm sclvm 0.1.8 3.2.2 \
+#    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
+#    "-c r -c bioconda -c chasehere -c conda-forge" \
+#    "hdf5 h5py matplotlib gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-argparse=1.0.4 r-irkernel=0.7.1 python=2.7 jupyter" \
+#    "/opt/conda/envs/sclvm/bin/pip install scLVM==0.1.8"
+#    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
   add_algorithm scnorm 0.99.7 3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
@@ -324,59 +195,17 @@ From:  ubuntu:16.04
     "r-argparse=1.0.4 r-devtools=1.13.2 r-irkernel=0.7.1 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-#  MODULE_NAME="scran"
-#  MODULE_VERSION="1.4.5"
-#  MODULE_DESCRIPTION="Implements a variety of low-level analyses of single-cell RNA-seq data."
-#  MODULE_CHANNELS="-c r -c bioconda "
-#  MODULE_PACKAGES="r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3.2"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
-
   add_algorithm scran 1.4.5 3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data." \
     "-c r -c bioconda " \
     "r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-biocinstaller=1.24.0 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-#  MODULE_NAME="seurat"
-#  MODULE_VERSION="2.0.0"
-#  MODULE_DESCRIPTION="Seurat."
-#  MODULE_CHANNELS="-c r"
-#  MODULE_PACKAGES="r-devtools=1.13.2 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.4.1"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  ###
-#  /opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat');"
-#  ###
-#  touch /opt/done_with_${MODULE_NAME}
-
   add_algorithm seurat 2.0.0 3.4.1 \
     "Seurat." \
     "-c r" \
     "r-devtools=1.13.2 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
-    '/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat')";'
-
-
-#  MODULE_NAME="svaseq"
-#  MODULE_VERSION="1.8.0"
-#  MODULE_DESCRIPTION=""
-#  MODULE_CHANNELS="-c bioconda -c r"
-#  MODULE_PACKAGES="bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
+    '/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('satijalab/seurat')"'
 
   add_algorithm svaseq 1.8.0 3.3 \
     "Svaseq." \
@@ -384,48 +213,25 @@ From:  ubuntu:16.04
     "bioconductor-sva=3.20.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-#
-#  MODULE_NAME="vamf"
-#  MODULE_VERSION="0.0.20170804"
-#  MODULE_DESCRIPTION=""
-#  MODULE_CHANNELS="-c bioconda -c r"
-#  MODULE_PACKAGES="bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0"
-#  MODULE_RBASEVERSION="3.3"
-#  conda create --yes -n ${MODULE_NAME} ${MODULE_CHANNELS} r-base=${MODULE_RBASEVERSION} ${MODULE_PACKAGES}
-#  conda env export -n ${MODULE_NAME} > /opt/condaenv_${MODULE_NAME}_0.yaml
-#  /opt/conda/envs/${MODULE_NAME}/bin/R --no-restore --no-save -e \
-#    "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name = '${MODULE_NAME}', displayname = '${MODULE_NAME}-${MODULE_VERSION}_rbase-${MODULE_RBASEVERSION}');"
-#  touch /opt/done_with_${MODULE_NAME}
-
   add_algorithm vamf 0.0.20170804 3.3 \
     "Vamf." \
     "-c bioconda -c r" \
     "bioconductor-biocinstaller=1.24.0 r-devtools=1.12.0 r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0" \
     "echo"
 
-
-
-
-  touch /opt/done_with_members_envs
-
-  ########################
-  # CONDA EXPORT AND CLEAN
+  touch /opt/donewith/members_envs
 
   # irkernel cleanup
   # rm /opt/irkermel-0.8.8.tar.gz
-
-  /opt/conda/bin/conda env export -n root > /opt/condaenv_root_`date +%Y-%m-%d-%H-%M`.yaml
-
+  /opt/conda/bin/conda env export -n root > /opt/condaenv/root_$(date +%Y-%m-%d-%H-%M).yaml
   # cleanup ???M
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
-
-  touch /opt/done_with_conda_export_clean
-
   chmod +755 -R /opt/*
+
+  touch /opt/donewith/conda_export_clean_chmod
 
   set +x
 
-  #############################################################################
 
 %environment
 
@@ -457,26 +263,24 @@ From:  ubuntu:16.04
   alias echopathtr='echo $PATH | tr ":" "\n"'
   alias ll='ls -lhF'
 
- ##############################################################################
-
+ ######
 %labels
+ ######
 
   MAINTAINER alaindomissy@gmail.com
   VERSION 0.0.1-20170826
   BUILD_DATE "${date -Iminutes}"
 
-  #############################################################################
-
+  ####
 %files
-
+  ####
   members/*          /opt/
   documentation      /opt/
   tests              /opt/
 
-  #############################################################################
-
+  ########
 %runscript
-
+  ########
   # this will get copied to /.singularity.d/runscript indide the container
   # which will run whenever the container is called as an executable
 
@@ -487,8 +291,6 @@ From:  ubuntu:16.04
 
   if [ $# -eq 0 ]
   then
-
-      # /opt/wf/eclip
 
       IDATE=$(date -Iseconds)
       # IDATE=$(date -Iseconds | tr "\:" "-" | tr "T" "+")
@@ -507,7 +309,7 @@ From:  ubuntu:16.04
       ln -sf scbatch scbatch_reset_password
       ln -sf scbatch scbatch_reset_config
       ln -sf scbatch scbatch_getdataset
-      #ln -sf scbatch scbatch_rgetreference
+      #ln -sf scbatch scbatch_getreference
 
       ln -sf scbatch scbatch_basics
       ln -sf scbatch scbatch_combatpy
