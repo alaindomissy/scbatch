@@ -127,8 +127,10 @@ From:  ubuntu:16.04
 
   add_algorithm()
   {
+    echo **********************************************************************
     NAME=$1
     VERSION=$2
+    echo **********************************************************************
     RVERSION=$3
     DESCRIPTION=$4
     CHANNELS=$5
@@ -136,28 +138,23 @@ From:  ubuntu:16.04
     PIPS=$7
     BIOCLITE=$8
     GITHUB=$9
-    URL=$10
+    URL=${10}
     ENVBIN="/opt/conda/envs/${NAME}/bin"
     REXEC="${ENVBIN}/R --no-restore --no-save -e"
     conda create --yes --name ${NAME} ${CHANNELS} r-base=${RVERSION} ${PACKAGES}
     conda env export --name ${NAME} > /opt/condaenv/${NAME}.yaml
     ${REXEC} "IRkernel::installspec(name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
       # "devtools::install_github('IRkernel/IRkernel');IRkernel::installspec(name=${NAME},displayname=${NAME}-${VERSION}-rbase-${RVERSION});"
-    if [ ${PIPS} != "none" ]    ; then ${ENVBIN}/pip install "${PIPS}"                   ; fi
+    if [ ${PIPS} != "none" ]    ; then ${ENVBIN}/pip install "${PIPS}"                  ; fi
     if [ ${BIOCLITE} != "none" ]; then ${REXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
     if [ ${GITHUB} != "none" ]  ; then ${REXEC} "devtools::install_github('${GITHUB}')" ; fi
     if [ ${URL} != "none" ]     ; then ${REXEC} "devtools::install_url('${URL}')"       ; fi
+    echo **********************************************************************
     touch /opt/donewith/${NAME}
+    echo **********************************************************************
   }
 
-  add_algorithm basics 0.7.27 3.3.2 \
-    "Basics." \
-    "-c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 python=3.6.2 jupyter=1.0.0" \
-    "none" \
-    "none" \
-    "none" \
-    "none"
+
 
   add_algorithm combatpy 0.0.1_20170804 3.3 \
     "Combatpy." \
@@ -172,10 +169,11 @@ From:  ubuntu:16.04
   # conda install -c bioconda limix
   # conda install -c conda-forge gpy
   # "scipy h5py numpy matplotlib scikit-learn re python=2.7 jupyter"
-  add_algorithm fsclvm 1.0.0.dev10 3.2.2 \
+  #add_algorithm fsclvm 1.0.0.dev10 3.2.2 \
+  add_algorithm fsclvm 1.0.0.dev10 3.3.2 \
     "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
     "-c defaults" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-irkernel scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13 jupyter=1.0.0" \
     "fscLVM==1.0.0.dev10" \
     "none" \
     "none" \
@@ -195,25 +193,27 @@ From:  ubuntu:16.04
   add_algorithm ruvseq 1.8.0 3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
-    "r-argparse=1.0.4 r-irkernel==0.7 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.1 r-irkernel==0.7 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
     "none"
 
-  # conda install -c chasehere r-rpython
-  # conda install -c bioconda limix
-  # conda install -c conda-forge gpy
-  add_algorithm sclvm 0.1.8 3.2.2 \
-    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
-    "-c r -c bioconda -c chasehere -c conda-forge" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 python=2.7.13 jupyter=1.0.0" \
-    "scLVM==0.1.8" \
-    "none" \
-    "none" \
-    "none"
-    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
+#  # conda install -c chasehere r-rpython
+#  # conda install -c bioconda limix
+#  # conda install -c conda-forge gpy
+#  #r-argparse
+#  # r-irkernel=0.7
+#  add_algorithm sclvm 0.1.8 3.2.2 \
+#    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
+#    "-c r -c bioconda -c chasehere -c conda-forge" \
+#    "r-irkernel hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 python=2.7.13 jupyter=1.0.0" \
+#    "scLVM==0.1.8" \
+#    "none" \
+#    "none" \
+#    "none"
+#    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
   add_algorithm scnorm 0.99.7 3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
@@ -232,6 +232,18 @@ From:  ubuntu:16.04
     "scran" \
     "none" \
     "none"
+
+#  # r-rcpp=0.12.11
+#  # "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
+#  add_algorithm basics 0.7.27 3.3.2 \
+#    "Bayesian Analysis of Single-Cell Sequencing Data." \
+#    "-c r -c bioconda" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0" \
+#    "none" \
+#    "scran" \
+#    "catavallejos/BASiCS" \
+#    "none"
+
 
   add_algorithm seurat 2.0.0 3.4.1 \
     "Seurat." \
