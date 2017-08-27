@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+
+scbatch_basics_notebook &
+scbatch_combatpy_notebook &
+scbatch_fsclvm_notebook &
+scbatch_limma_notebook &
+scbatch_ruvseq_notebook &
+scbatch_sclvm_notebook &
+scbatch_scnorm_notebook &
+scbatch_scran_notebook &
+scbatch_seurat_notebook &
+scbatch_svaseq_notebook &
+scbatch_vamf_notebook &
+
