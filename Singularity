@@ -85,29 +85,30 @@ From:  ubuntu:16.04
   #ENTRYPOINT [ "/usr/bin/tini", "--" ]
   #CMD [ "/bin/bash" ]
 
-  ############
-  # CONDA PATH
   # this is required here as the environment section is not processed yet
   PATH=/opt/conda/bin:$PATH
   export PATH
+  echo ************************************************************************
+  touch /opt/donewith/conda
+  echo ************************************************************************
 
-  touch /opt/donewith/miniconda
 
-
-  ##########
-  # NOTEBOOK
-  conda create --yes -n notebook-5.0.0 python=3.6 notebook=5.0.0
-  conda env export -n notebook-5.0.0 > /opt/condaenv_notebook-5.0.0.yaml
-  ############
-  # CONDA PATH
+  echo ************************************************************************
+  NAME=notebook
+  VERSION=5.0.0
+  echo ************************************************************************
+  conda create --yes -n notebook python=3.6 notebook=5.0.0
+  conda env export -n notebook > /opt/condaenv/notebook-5.0.0.yaml
   PATH="/opt/conda/envs/notebook-5.0.0/bin:$PATH"
   export PATH
-
+  NOTEBOOKKERNELS=/opt/conda/envs/notebook/share/jupyter/kernels/
+  echo ************************************************************************
   touch /opt/donewith/notebook
+  echo ************************************************************************
 
 
-  ##########
-  # IRKERNEL
+
+  # Todo IRKERNEL
   #wget --quiet  https://github.com/IRkernel/IRkernel/archive/0.8.8.tar.gz  -O /opt/irkermel-0.8.8.tar.gz
   #tar -xzf /opt/irkermel-0.8.8.tar.gz
 
@@ -143,8 +144,8 @@ From:  ubuntu:16.04
     REXEC="${ENVBIN}/R --no-restore --no-save -e"
     conda create --yes --name ${NAME} ${CHANNELS} r-base=${RVERSION} ${PACKAGES}
     conda env export --name ${NAME} > /opt/condaenv/${NAME}.yaml
-    ${REXEC} "IRkernel::installspec(name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
-      # "devtools::install_github('IRkernel/IRkernel');IRkernel::installspec(name=${NAME},displayname=${NAME}-${VERSION}-rbase-${RVERSION});"
+    ${REXEC} "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
+    cp -r ${ENVBIN}/share/jupyter/kernels/${NAME} ${NOTEBOOKKERNELS}/
     if [ ${PIPS} != "none" ]    ; then ${ENVBIN}/pip install "${PIPS}"                  ; fi
     if [ ${BIOCLITE} != "none" ]; then ${REXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
     if [ ${GITHUB} != "none" ]  ; then ${REXEC} "devtools::install_github('${GITHUB}')" ; fi
@@ -155,11 +156,11 @@ From:  ubuntu:16.04
   }
 
 
-
+  # r-irkernel=0.7.1
   add_algorithm combatpy 0.0.1_20170804 3.3 \
     "Combatpy." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "bladderbatch" \
     "none" \
@@ -169,11 +170,12 @@ From:  ubuntu:16.04
   # conda install -c bioconda limix
   # conda install -c conda-forge gpy
   # "scipy h5py numpy matplotlib scikit-learn re python=2.7 jupyter"
-  #add_algorithm fsclvm 1.0.0.dev10 3.2.2 \
+  #add_algorithm fsclvm 1.0.0.dev10 3.2.2
+  # r-irkernel
   add_algorithm fsclvm 1.0.0.dev10 3.3.2 \
     "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
     "-c defaults" \
-    "r-argparse=1.0.4 r-irkernel scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13 jupyter=1.0.0" \
+    "r-argparse=1.0.4 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13 jupyter=1.0.0" \
     "fscLVM==1.0.0.dev10" \
     "none" \
     "none" \
@@ -181,19 +183,21 @@ From:  ubuntu:16.04
     #'/opt/conda/envs/fsclvm/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
     # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
+  # r-irkernel=0.7.1
   add_algorithm limma 3.30.13 3.3.2 \
     "Linear Models for Microarray and RNA-Seq Data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 r-irkernel=0.7.1 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-limma=3.30.13 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
     "none"
 
+  # r-irkernel==0.7
   add_algorithm ruvseq 1.8.0 3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
-    "r-argparse=1.0.1 r-irkernel==0.7 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.1 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
@@ -215,19 +219,21 @@ From:  ubuntu:16.04
 #    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
 #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
+  # r-irkernel=0.7.1
   add_algorithm scnorm 0.99.7 3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
     "-c bioconda -c r -c kurtwheeler" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
+  #  r-irkernel=0.7.1
   add_algorithm scran 1.4.5 3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data." \
     "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "scran" \
     "none" \
@@ -244,29 +250,31 @@ From:  ubuntu:16.04
 #    "catavallejos/BASiCS" \
 #    "none"
 
-
+  # r-irkernel=0.7.1
   add_algorithm seurat 2.0.0 3.4.1 \
     "Seurat." \
     "-c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.13.2 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "satijalab/seurat" \
     "none"
 
+  # r-irkernel=0.7.1
   add_algorithm svaseq 1.8.0 3.3 \
     "Svaseq." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-sva=3.20.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-sva=3.20.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
     "none"
 
+  # r-irkernel=0.7.1
   add_algorithm vamf 0.0.20170804 3.3 \
     "Vamf." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 python=3.6.2 jupyter=1.0.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 python=3.6.2 jupyter=1.0.0" \
     "none" \
     "none" \
     "none" \
@@ -280,7 +288,7 @@ From:  ubuntu:16.04
   /opt/conda/bin/conda env export -n root > /opt/condaenv/root_$(date +%Y-%m-%d-%H-%M).yaml
   # cleanup ???M
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
-  chmod +755 -R /opt/*
+  chmod --recursive --changes +755 /opt/*
 
   touch /opt/donewith/conda_export_clean_chmod
 
@@ -290,7 +298,7 @@ From:  ubuntu:16.04
 %environment
 
   PATH="/opt/conda/bin:$PATH"
-  PATH="/opt/conda/envs/notebook-5.0.0/bin:$PATH"
+  PATH="/opt/conda/envs/notebook/bin:$PATH"
 
   PATH="/opt/members/notebook:$PATH"
   PATH="/opt/members/rargparse:$PATH"
