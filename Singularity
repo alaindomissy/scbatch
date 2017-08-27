@@ -149,8 +149,8 @@ From:  ubuntu:16.04
     conda create --yes --name ${NAME} ${CHANNELS} ${RBASEPACKAGE} ${PACKAGES}
     conda env export --name ${NAME} > /opt/condaenv/${NAME}.yaml
     if [ ${RVERSION} != "none" ] ; then
-      ${REXEC} "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
-      cp -r ${ENVBIN}/share/jupyter/kernels/${NAME} ${NOTEBOOKKERNELS}/
+      ${REXEC} "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(user=FALSE,name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
+      #cp -r ${ENVBIN}/share/jupyter/kernels/${NAME} ${NOTEBOOKKERNELS}/
     fi
     if [ ${PIPS} != "none" ]    ; then ${ENVBIN}/pip install "${PIPS}"                  ; fi
     if [ ${BIOCLITE} != "none" ]; then ${REXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
@@ -162,14 +162,14 @@ From:  ubuntu:16.04
   }
 
 
-  # r-irkernel=0.7.1 jupyter=1.0.0
+  # r-irkernel=0.7.1 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     combatpy \
     0.0.1_20170804 \
     3.3 \
     "Combatpy." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 jupyter_client=5.1.0 python=3.6.2" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 python=3.6.2" \
     "none" \
     "bladderbatch" \
     "none" \
@@ -178,16 +178,15 @@ From:  ubuntu:16.04
   # conda install -c chasehere r-rpython
   # conda install -c bioconda limix
   # conda install -c conda-forge gpy
-  # "scipy h5py numpy matplotlib scikit-learn re python=2.7 jupyter"
-  #add_algorithm fsclvm 1.0.0.dev10 3.2.2
-  # r-irkernel jupyter=1.0.0"
+  # "re python=2.7 jupyter"
+  # r-irkernel jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     fsclvm \
     1.0.0.dev10 \
     3.3.2 \
     "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
     "-c defaults" \
-    "r-argparse=1.0.4 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 jupyter_client=5.1.0 python=2.7.13" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13" \
     "fscLVM==1.0.0.dev10" \
     none \
     none \
@@ -195,28 +194,27 @@ From:  ubuntu:16.04
     # devtools::install_github('PMBio/scLVM');
     # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0
-
+  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     limma \
     3.30.13 \
     3.3.2 \
     "Linear Models for Microarray and RNA-Seq Data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-limma=3.30.13 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
     none \
     none \
     none \
     none
 
-  # r-irkernel==0.7 python=3.6.2 jupyter=1.0.0
+  # r-irkernel==0.7 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     ruvseq \
     1.8.0 \
     3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
-    "r-argparse=1.0.1 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0 jupyter_client=5.1.0" \
+    "r-argparse=1.0.1 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0" \
     none \
     none \
     none \
@@ -238,27 +236,43 @@ From:  ubuntu:16.04
 #    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
 #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0
+  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     scnorm \
     0.99.7 \
-    rbase-3.4.1 \
+    3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
     "-c bioconda -c r -c kurtwheeler" \
-    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
     none \
     none \
     none \
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
-  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0
+
+  # conda install -c kurtwheeler bioconductor-biocinstaller=1.26.0
+  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+  add_algorithm \
+    scone \
+    1.1.2 \
+    3.4.1 \
+    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses." \
+    "-c r -c bioconda -c kurtwheeler" \
+    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
+    none \
+    "scone" \
+    none \
+    none
+
+
+  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     scran \
     1.4.5 \
     3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data." \
     "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
     none \
     "scran" \
     none \
@@ -276,40 +290,40 @@ From:  ubuntu:16.04
 #    "catavallejos/BASiCS" \
 #    "none"
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0
+  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     seurat \
     2.0.0 \
     3.4.1 \
     "Seurat." \
     "-c r" \
-    "r-argparse=1.0.4 r-devtools=1.13.2 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.13.2" \
     none \
     none \
     "satijalab/seurat" \
     none
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0
+  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     svaseq \
     1.8.0 \
     3.3 \
     "Svaseq." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-sva=3.20.0 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-sva=3.20.0" \
     none \
     none \
     none \
     none
 
-  # r-irkernel=0.7.1  python=3.6.2 jupyter=1.0.0
+  # r-irkernel=0.7.1  python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     vamf \
     0.0.20170804 \
     3.3 \
     "Vamf." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 jupyter_client=5.1.0" \
+    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0" \
     none \
     none \
     none \
@@ -366,7 +380,7 @@ From:  ubuntu:16.04
  ######
 
   MAINTAINER alaindomissy@gmail.com
-  VERSION 0.0.1-20170826
+  VERSION 0.0.1-20170827
   BUILD_DATE "${date -Iminutes}"
 
   ####
