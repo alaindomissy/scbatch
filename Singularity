@@ -23,12 +23,14 @@ From:  ubuntu:16.04
 
   mkdir -p $SINGULARITY_ROOTFS/opt/condaenv
   mkdir -p $SINGULARITY_ROOTFS/opt/donewith
+  mkdir -p $SINGULARITY_ROOTFS/opt/datasets
   mkdir -p $SINGULARITY_ROOTFS/opt/members
   mkdir -p $SINGULARITY_ROOTFS/opt/patches
 
   # these are needed early for post section
-  cp -r ./members/* $SINGULARITY_ROOTFS/opt/members/
-  cp -r ./patches/* $SINGULARITY_ROOTFS/opt/patches/
+  cp -r ./datasets/* $SINGULARITY_ROOTFS/opt/datasets/
+  cp -r ./members/*  $SINGULARITY_ROOTFS/opt/members/
+  cp -r ./patches/*  $SINGULARITY_ROOTFS/opt/patches/
 
   ###
 %post
@@ -136,7 +138,7 @@ From:  ubuntu:16.04
     GITHUB=${10}
     URL=${11}
 
-    DISPLAYNAME=$(echo "${NAME}-${VERSION}_PY-${PYVERSION}_R-${RVERSION}_R-${RVERSION}_${DESCRIPTION}" | sed -e 's/ /_/g')
+    DISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_py${PYVERSION}_r${RVERSION}" | sed -e 's/ /_/g')
     ENVPREFIX="/opt/conda/envs/${NAME}"
     REXEC="${ENVPREFIX}/bin/R --no-restore --no-save -e"
 
@@ -171,30 +173,25 @@ From:  ubuntu:16.04
   }
 
 
-
 #  add_algorithm \
 #    ccremover \
 
-
-  # jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     combatpy \
-    0.0.1_20170804 \
+    0.0.20170804 \
     3.6.2 \
     3.3 \
-    "Combatpy." \
+    "Combatting batch effects when combining batches of gene expression microarray data" \
     "-c bioconda -c r" \
     "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1" \
     "none" \
     "bladderbatch" \
     "none" \
     "none"
-#
-#  # conda install -c chasehere r-rpython
-#  # conda install -c bioconda limix
-#  # conda install -c conda-forge gpy
-#  # "re python=2.7 jupyter"
-#  # r-irkernel jupyter=1.0.0 jupyter_client=5.1.0
+
+#  # -c chasehere r-rpython
+#  # -c bioconda limix
+#  # -c conda-forge gpy
 #  add_algorithm \
 #    fsclvm \
 #    1.0.0.dev10 \
@@ -210,7 +207,6 @@ From:  ubuntu:16.04
 #    # devtools::install_github('PMBio/scLVM');
 #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-  # python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     limma \
     3.30.13 \
@@ -224,53 +220,53 @@ From:  ubuntu:16.04
     none \
     none
 
+#  # r-irkernel ### TODO version ?
+#  add_algorithm \
+#    ruvseq \
+#    1.8.0 \
+#    "none" \
+#    3.3.1 \
+#    "Remove Unwanted Variation from RNA-Seq Data" \
+#    "-c bioconda -c pjones -c r" \
+#    "r-argparse=1.0.1 r-irkernel r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0" \
+#    none \
+#    none \
+#    none \
+#    none
 
-  add_algorithm \
-    ruvseq \
-    1.8.0 \
-    "none" \
-    3.3.1 \
-    "Remove Unwanted Variation from RNA-Seq Data" \
-    "-c bioconda -c pjones -c r" \
-    "r-argparse=1.0.1 r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0" \
-    none \
-    none \
-    none \
-    none
-#
-##  # conda install -c chasehere r-rpython
-##  # conda install -c bioconda limix
-##  # conda install -c conda-forge gpy
-##  #r-argparse
-##  # r-irkernel=0.7
-##  add_algorithm sclvm 0.1.8 3.2.2 \
-##    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
-##    "-c r -c bioconda -c chasehere -c conda-forge" \
-##    "r-irkernel hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 python=2.7.13 jupyter=1.0.0" \
-##    "scLVM==0.1.8" \
-##    "none" \
-##    "none" \
-##    "none"
-##    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-##    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
-
+#  # -c chasehere r-rpython
+#  # -c bioconda limix
+#  # -c conda-forge gpy
+#  # r-argparse
+#  add_algorithm \
+#    sclvm \
+#    0.1.8 \
+#    2.7.13 \
+#    3.2.2 \
+#    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
+#    "-c r -c bioconda -c chasehere -c conda-forge" \
+#    "r-irkernel hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6" \
+#    "scLVM==0.1.8" \
+#    "none" \
+#    "PMBio/scLVM" \
+#    "none"
+#    #'/opt/conda/envs/sclvm/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
   add_algorithm \
     scnorm \
     0.99.7 \
     "none" \
     3.4.1 \
-    "Robust normalization of single-cell RNA-seq data." \
+    "Robust normalization of single-cell RNA-seq data" \
     "-c bioconda -c r -c kurtwheeler" \
-    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
     none \
     none \
     none \
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
-
-#  # conda install -c kurtwheeler bioconductor-biocinstaller=1.26.0
-#  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+#  # -c kurtwheeler bioconductor-biocinstaller=1.26.0
 #  add_algorithm \
 #    scone \
 #    1.1.2 \
@@ -284,83 +280,75 @@ From:  ubuntu:16.04
 #    none \
 #    none
 
-
   add_algorithm \
     scran \
     1.4.5 \
     "none" \
     3.3.2 \
-    "Implements a variety of low-level analyses of single-cell RNA-seq data." \
+    "Implements a variety of low-level analyses of single-cell RNA-seq data" \
     "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
     none \
     "scran" \
     none \
     none
 
-
-##  # r-irkernel=0.7.1
-##  # r-rcpp=0.12.11
-##  # "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
-##  add_algorithm basics \
-##     0.7.27 \
-##    "none" \
-##     3.3.2 \
-##    "Bayesian Analysis of Single-Cell Sequencing Data." \
-##    "-c r -c bioconda" \
-##    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
-##    "none" \
-##    "scran" \
-##    "catavallejos/BASiCS" \
-##    "none"
-#
+#  # r-irkernel=0.7.1
+#  # r-rcpp=0.12.11
+#  # "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
+#  add_algorithm basics \
+#     0.7.27 \
+#    "none" \
+#     3.3.2 \
+#    "Bayesian Analysis of Single-Cell Sequencing Data." \
+#    "-c r -c bioconda" \
+#    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
+#    "none" \
+#    "scran" \
+#    "catavallejos/BASiCS" \
+#    "none"
 
   add_algorithm \
     seurat \
     2.0.0 \
     "none" \
     3.4.1 \
-    "Seurat." \
+    "QC, analysis, and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
     "-c r" \
-    "r-argparse=1.0.4 r-devtools=1.13.2" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.13.2" \
     none \
     none \
     "satijalab/seurat" \
     none
-
 
   add_algorithm \
     svaseq \
     1.8.0 \
     "none" \
     3.3 \
-    "Svaseq." \
+    "Removing batch effects and other unwanted variation in high-throughput experiments" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-sva=3.20.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
     none \
     none \
     none \
     none
-
 
   add_algorithm \
     vamf \
     0.0.20170804 \
     "none" \
     3.3 \
-    "Vamf." \
+    "Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0" \
     none \
     none \
     none \
     none
 
-
   touch /opt/donewith/members_envs
 
-  # irkernel cleanup
-  # rm /opt/irkermel-0.8.8.tar.gz
   /opt/conda/bin/conda env export -n root > /opt/condaenv/root_$(date +%Y-%m-%d-%H-%M).yaml
   # cleanup ???M
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
@@ -376,12 +364,10 @@ From:  ubuntu:16.04
   PATH="/opt/conda/bin:$PATH"
   PATH="/opt/conda/envs/jupyternotebook/bin:$PATH"
 
-  PATH="/opt/members/jupyternotebook:$PATH"
-  PATH="/opt/members/rargparse:$PATH"
+  PATH="/opt/members/activate:$PATH"
   PATH="/opt/members/scbatchget:$PATH"
-  #PATH="/opt/members/scbatchdataset:$PATH"
+  PATH="/opt/members/jupyternotebook:$PATH"
 
-  PATH="/opt/members/all:$PATH"
   PATH="/opt/members/basics:$PATH"
   PATH="/opt/members/combatpy:$PATH"
   PATH="/opt/members/fsclvm:$PATH"
@@ -421,7 +407,7 @@ From:  ubuntu:16.04
   tests              /opt/
 
   ########
-%runscript
+%runscriptdataset
   ########
   # this will get copied to /.singularity.d/runscript indide the container
   # which will run whenever the container is called as an executable
@@ -447,25 +433,15 @@ From:  ubuntu:16.04
       mv scbatch ./commands/
 
       cd commands
+
       ln -sf scbatch scbatch_activate
-      ln -sf scbatch scbatch_notebook
-      ln -sf scbatch scbatch_setpassword
-      ln -sf scbatch scbatch_setconfig
+
       ln -sf scbatch scbatch_getdataset
       ln -sf scbatch scbatch_getreference
 
-
-#      ln -sf scbatch scbatch_basics
-#      ln -sf scbatch scbatch_combatpy
-#      ln -sf scbatch scbatch_fsclvm
-#      ln -sf scbatch scbatch_limma
-#      ln -sf scbatch scbatch_ruvseq
-#      ln -sf scbatch scbatch_sclvm
-#      ln -sf scbatch scbatch_scnorm
-#      ln -sf scbatch scbatch_scran
-#      ln -sf scbatch scbatch_seurat
-#      ln -sf scbatch scbatch_svaseq
-#      ln -sf scbatch scbatch_vamf
+      ln -sf scbatch scbatch_notebook
+      ln -sf scbatch scbatch_setpassword
+      ln -sf scbatch scbatch_setconfig
 
       cd -
 
