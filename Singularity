@@ -150,8 +150,8 @@ From:  ubuntu:16.04
 
     PYDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_python${PYVERSION}" | sed -e 's/ /_/g')
     RDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_r${RVERSION}" | sed -e 's/ /_/g')
-    PYKERNELSPEC='{"argv": ["${ENVPYTHON}", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
-    RKERNELSPEC='{"argv": ["${ENVR}", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
+    PYKERNELSPEC='{"argv": ["'${ENVPYTHON}'", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv": ["'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
       echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
