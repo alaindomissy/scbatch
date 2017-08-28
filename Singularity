@@ -138,12 +138,14 @@ From:  ubuntu:16.04
     GITHUB=${10}
     URL=${11}
 
-    DISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_py${PYVERSION}_r${RVERSION}" | sed -e 's/ /_/g')
+    PYDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_python${PYVERSION}" | sed -e 's/ /_/g')
+    RDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_r${RVERSION}" | sed -e 's/ /_/g')
+
     ENVPREFIX="/opt/conda/envs/${NAME}"
     REXEC="${ENVPREFIX}/bin/R --no-restore --no-save -e"
 
-    PYKERNELSPEC='{"argv": ["'${ENVPREFIX}'/bin/python", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${DISPLAYNAME}'", "language":"python"}'
-    RKERNELSPEC='{"argv": ["'${ENVPREFIX}'/lib/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${DISPLAYNAME}'", "language":"R"}'
+    PYKERNELSPEC='{"argv": ["'${ENVPREFIX}'/bin/python", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv": ["'${ENVPREFIX}'/lib/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
 
     PYTHONPACKAGE=""; if [ ${PYVERSION} != "none" ] ; then PYTHONPACKAGE="python=${PYVERSION}"; fi
     RBASEPACKAGE="" ; if [ ${RVERSION}  != "none" ] ; then RBASEPACKAGE="r-base=${RVERSION}"  ; fi
@@ -154,13 +156,13 @@ From:  ubuntu:16.04
     #${ENVPREFIX}/bin/conda env export   > /opt/condaenv/${NAME}_THISENV.yaml
 
     if [ ${PYVERSION} != "none" ] ; then
-      cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}"
-      echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}"/kernel.json
+      cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
+      echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
     fi
 
     if [ ${RVERSION} != "none" ] ; then
-      cp -r  /opt/patches/jupyter/kernels/ir ${KERNELS}/"${NAME}"
-      echo "${RKERNELSPEC}" > ${KERNELS}/"${NAME}"/kernel.json
+      cp -r  /opt/patches/jupyter/kernels/ir ${KERNELS}/"${NAME}_r"
+      echo "${RKERNELSPEC}" > ${KERNELS}/"${NAME}_r"/kernel.json
     fi
 
     if [ ${PIPS} != "none" ]    ; then ${ENVPREFIX}/bin/pip install "${PIPS}"           ; fi
@@ -406,8 +408,9 @@ From:  ubuntu:16.04
   documentation      /opt/
   tests              /opt/
 
+
   ########
-%runscriptdataset
+%runscript
   ########
   # this will get copied to /.singularity.d/runscript indide the container
   # which will run whenever the container is called as an executable
