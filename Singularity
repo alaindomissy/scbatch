@@ -93,34 +93,28 @@ From:  ubuntu:16.04
   echo ************************************************************************
 
 
+  # jupyter=1.0.0
   echo ************************************************************************
-  NAME=notebook
+  NAME=jupyternotebook
   VERSION=5.0.0
   echo ************************************************************************
-  conda create --yes -n notebook python=3.6 notebook=5.0.0
-  conda env export -n notebook > /opt/condaenv/notebook-5.0.0.yaml
-  PATH="/opt/conda/envs/notebook/bin:$PATH"
+  conda create --yes -n jupyternotebook python=3.6.2 notebook=5.0.0
+  conda env export -n jupyternotebook > /opt/condaenv/jupyternotebook-5.0.0.yaml
+  PATH="/opt/conda/envs/jupyternotebook/bin:$PATH"
   export PATH
-  NOTEBOOKKERNELS=/opt/conda/envs/notebook/share/jupyter/kernels/
+  JUPYTER_PATH=/opt/conda/envs/jupyternotebook/share/jupyter
+  export JUPYTER_PATH
+  KERNELS=${JUPYTER_PATH}/kernels
+  export KERNELS
+  mkdir -p $KERNELS
   echo ************************************************************************
-  touch /opt/donewith/notebook
+  touch /opt/donewith/jupyternotebook
   echo ************************************************************************
 
 
 
-  # Todo IRKERNEL
-  #wget --quiet  https://github.com/IRkernel/IRkernel/archive/0.8.8.tar.gz  -O /opt/irkermel-0.8.8.tar.gz
-  #tar -xzf /opt/irkermel-0.8.8.tar.gz
-
-  # TODO replace devtools::install_github('IRkernel/IRkernel') with
-  # devtools::install_local('/opt/irkermel-0.8.8');
-
-  # TODO MORE ALGOS ?
-  # ccremover
-
-  # TODO other way to install in R:
-  # /opt/conda/envs/limma/bin/R --no-restore --no-save -e \
-  #   "library(devtools); install_github('IRkernel/IRkernel'); library(IRkernel); installspec(name = 'limma', displayname = 'limma-3-30.13_R 3.3');"
+  # TODO IRKERNEL: replace devtools::install_github('IRkernel/IRkernel') with devtools::install_url
+  # devtools::install_url('https://github.com/IRkernel/IRkernel/archive/0.8.8.tar.gz ');
 
   # TODO how to check things out in R
   # /opt/conda/envs/basics/bin/R --no-restore --no-save -e "library(); loadedNamespaces();"
@@ -131,28 +125,43 @@ From:  ubuntu:16.04
     echo **********************************************************************
     NAME=$1
     VERSION=$2
-    echo **********************************************************************
-    RVERSION=$3
-    DESCRIPTION=$4
-    CHANNELS=$5
-    PACKAGES=$6
-    PIPS=$7
-    BIOCLITE=$8
-    GITHUB=$9
-    URL=${10}
-    ENVBIN="/opt/conda/envs/${NAME}/bin"
-    REXEC="${ENVBIN}/R --no-restore --no-save -e"
-    RBASEPACKAGE=""
-    if [ ${RVERSION} != "none" ] ; then
-      RBASEPACKAGE="r-base=${RVERSION}"
+    echo **********************************************************************=
+    PYVERSION=$3
+    RVERSION=$4
+    DESCRIPTION=$5
+    CHANNELS=$6
+    PACKAGES=$7
+    PIPS=$8
+    BIOCLITE=$9
+    GITHUB=${10}
+    URL=${11}
+
+    DISPLAYNAME=$(echo "${NAME}-${VERSION}_PY-${PYVERSION}_R-${RVERSION}_R-${RVERSION}_${DESCRIPTION}" | sed -e 's/ /_/g')
+    ENVPREFIX="/opt/conda/envs/${NAME}"
+    REXEC="${ENVPREFIX}/bin/R --no-restore --no-save -e"
+
+    PYKERNELSPEC='{"argv": ["'${ENVPREFIX}'/bin/python", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${DISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv": ["'${ENVPREFIX}'/lib/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${DISPLAYNAME}'", "language":"R"}'
+
+    PYTHONPACKAGE=""; if [ ${PYVERSION} != "none" ] ; then PYTHONPACKAGE="python=${PYVERSION}"; fi
+    RBASEPACKAGE="" ; if [ ${RVERSION}  != "none" ] ; then RBASEPACKAGE="r-base=${RVERSION}"  ; fi
+
+    conda create --yes --name ${NAME} ${CHANNELS} ${PYTHONPACKAGE} ${RBASEPACKAGE} ${PACKAGES}
+    conda env export --name ${NAME} > /opt/condaenv/${NAME}_ROOTENV.yaml
+    # Conda Env Exception: Unable to determine environment
+    #${ENVPREFIX}/bin/conda env export   > /opt/condaenv/${NAME}_THISENV.yaml
+
+    if [ ${PYVERSION} != "none" ] ; then
+      cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}"
+      echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}"/kernel.json
     fi
-    conda create --yes --name ${NAME} ${CHANNELS} ${RBASEPACKAGE} ${PACKAGES}
-    conda env export --name ${NAME} > /opt/condaenv/${NAME}.yaml
+
     if [ ${RVERSION} != "none" ] ; then
-      ${REXEC} "devtools::install_github('IRkernel/IRkernel'); IRkernel::installspec(user=FALSE,name='${NAME}',displayname='${NAME}-${VERSION}_rbase-${RVERSION}');"
-      #cp -r ${ENVBIN}/share/jupyter/kernels/${NAME} ${NOTEBOOKKERNELS}/
+      cp -r  /opt/patches/jupyter/kernels/ir ${KERNELS}/"${NAME}"
+      echo "${RKERNELSPEC}" > ${KERNELS}/"${NAME}"/kernel.json
     fi
-    if [ ${PIPS} != "none" ]    ; then ${ENVBIN}/pip install "${PIPS}"                  ; fi
+
+    if [ ${PIPS} != "none" ]    ; then ${ENVPREFIX}/bin/pip install "${PIPS}"           ; fi
     if [ ${BIOCLITE} != "none" ]; then ${REXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
     if [ ${GITHUB} != "none" ]  ; then ${REXEC} "devtools::install_github('${GITHUB}')" ; fi
     if [ ${URL} != "none" ]     ; then ${REXEC} "devtools::install_url('${URL}')"       ; fi
@@ -162,55 +171,64 @@ From:  ubuntu:16.04
   }
 
 
-  # r-irkernel=0.7.1 jupyter=1.0.0 jupyter_client=5.1.0
+
+#  add_algorithm \
+#    ccremover \
+
+
+  # jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     combatpy \
     0.0.1_20170804 \
+    3.6.2 \
     3.3 \
     "Combatpy." \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 python=3.6.2" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1" \
     "none" \
     "bladderbatch" \
     "none" \
     "none"
+#
+#  # conda install -c chasehere r-rpython
+#  # conda install -c bioconda limix
+#  # conda install -c conda-forge gpy
+#  # "re python=2.7 jupyter"
+#  # r-irkernel jupyter=1.0.0 jupyter_client=5.1.0
+#  add_algorithm \
+#    fsclvm \
+#    1.0.0.dev10 \
+#    2.7.13 \
+#    3.3.2 \
+#    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
+#    "-c defaults" \
+#    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0" \
+#    "fscLVM==1.0.0.dev10" \
+#    none \
+#    none \
+#    none
+#    # devtools::install_github('PMBio/scLVM');
+#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-  # conda install -c chasehere r-rpython
-  # conda install -c bioconda limix
-  # conda install -c conda-forge gpy
-  # "re python=2.7 jupyter"
-  # r-irkernel jupyter=1.0.0 jupyter_client=5.1.0
-  add_algorithm \
-    fsclvm \
-    1.0.0.dev10 \
-    3.3.2 \
-    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors." \
-    "-c defaults" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 python=2.7.13" \
-    "fscLVM==1.0.0.dev10" \
-    none \
-    none \
-    none
-    # devtools::install_github('PMBio/scLVM');
-    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
-
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+  # python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     limma \
     3.30.13 \
+    "none" \
     3.3.2 \
     "Linear Models for Microarray and RNA-Seq Data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
     none \
     none \
     none \
     none
 
-  # r-irkernel==0.7 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+
   add_algorithm \
     ruvseq \
     1.8.0 \
+    "none" \
     3.3.1 \
     "Remove Unwanted Variation from RNA-Seq Data" \
     "-c bioconda -c pjones -c r" \
@@ -219,27 +237,28 @@ From:  ubuntu:16.04
     none \
     none \
     none
+#
+##  # conda install -c chasehere r-rpython
+##  # conda install -c bioconda limix
+##  # conda install -c conda-forge gpy
+##  #r-argparse
+##  # r-irkernel=0.7
+##  add_algorithm sclvm 0.1.8 3.2.2 \
+##    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
+##    "-c r -c bioconda -c chasehere -c conda-forge" \
+##    "r-irkernel hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 python=2.7.13 jupyter=1.0.0" \
+##    "scLVM==0.1.8" \
+##    "none" \
+##    "none" \
+##    "none"
+##    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+##    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-#  # conda install -c chasehere r-rpython
-#  # conda install -c bioconda limix
-#  # conda install -c conda-forge gpy
-#  #r-argparse
-#  # r-irkernel=0.7
-#  add_algorithm sclvm 0.1.8 3.2.2 \
-#    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation." \
-#    "-c r -c bioconda -c chasehere -c conda-forge" \
-#    "r-irkernel hdf5 h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 python=2.7.13 jupyter=1.0.0" \
-#    "scLVM==0.1.8" \
-#    "none" \
-#    "none" \
-#    "none"
-#    #'/opt/conda/envs/seurat/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     scnorm \
     0.99.7 \
+    "none" \
     3.4.1 \
     "Robust normalization of single-cell RNA-seq data." \
     "-c bioconda -c r -c kurtwheeler" \
@@ -250,25 +269,26 @@ From:  ubuntu:16.04
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
 
-  # conda install -c kurtwheeler bioconductor-biocinstaller=1.26.0
-  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
-  add_algorithm \
-    scone \
-    1.1.2 \
-    3.4.1 \
-    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses." \
-    "-c r -c bioconda -c kurtwheeler" \
-    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
-    none \
-    "scone" \
-    none \
-    none
+#  # conda install -c kurtwheeler bioconductor-biocinstaller=1.26.0
+#  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+#  add_algorithm \
+#    scone \
+#    1.1.2 \
+#    "none" \
+#    3.4.1 \
+#    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses." \
+#    "-c r -c bioconda -c kurtwheeler" \
+#    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
+#    none \
+#    "scone" \
+#    none \
+#    none
 
 
-  #  r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
   add_algorithm \
     scran \
     1.4.5 \
+    "none" \
     3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data." \
     "-c r -c bioconda " \
@@ -278,22 +298,27 @@ From:  ubuntu:16.04
     none \
     none
 
-#  # r-irkernel=0.7.1
-#  # r-rcpp=0.12.11
-#  # "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
-#  add_algorithm basics 0.7.27 3.3.2 \
-#    "Bayesian Analysis of Single-Cell Sequencing Data." \
-#    "-c r -c bioconda" \
-#    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter_client=5.1.0" \
-#    "none" \
-#    "scran" \
-#    "catavallejos/BASiCS" \
-#    "none"
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+##  # r-irkernel=0.7.1
+##  # r-rcpp=0.12.11
+##  # "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
+##  add_algorithm basics \
+##     0.7.27 \
+##    "none" \
+##     3.3.2 \
+##    "Bayesian Analysis of Single-Cell Sequencing Data." \
+##    "-c r -c bioconda" \
+##    "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
+##    "none" \
+##    "scran" \
+##    "catavallejos/BASiCS" \
+##    "none"
+#
+
   add_algorithm \
     seurat \
     2.0.0 \
+    "none" \
     3.4.1 \
     "Seurat." \
     "-c r" \
@@ -303,10 +328,11 @@ From:  ubuntu:16.04
     "satijalab/seurat" \
     none
 
-  # r-irkernel=0.7.1 python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+
   add_algorithm \
     svaseq \
     1.8.0 \
+    "none" \
     3.3 \
     "Svaseq." \
     "-c bioconda -c r" \
@@ -316,10 +342,11 @@ From:  ubuntu:16.04
     none \
     none
 
-  # r-irkernel=0.7.1  python=3.6.2 jupyter=1.0.0 jupyter_client=5.1.0
+
   add_algorithm \
     vamf \
     0.0.20170804 \
+    "none" \
     3.3 \
     "Vamf." \
     "-c bioconda -c r" \
@@ -347,9 +374,9 @@ From:  ubuntu:16.04
 %environment
 
   PATH="/opt/conda/bin:$PATH"
-  PATH="/opt/conda/envs/notebook/bin:$PATH"
+  PATH="/opt/conda/envs/jupyternotebook/bin:$PATH"
 
-  PATH="/opt/members/notebook:$PATH"
+  PATH="/opt/members/jupyternotebook:$PATH"
   PATH="/opt/members/rargparse:$PATH"
   PATH="/opt/members/scbatchget:$PATH"
   #PATH="/opt/members/scbatchdataset:$PATH"
@@ -372,6 +399,9 @@ From:  ubuntu:16.04
   HOSTIP=$(hostname -i)
   export HOSTIP
 
+  JUPYTER_PATH=/opt/conda/envs/jupyternotebook/share/jupyter
+  export JUPYTER_PATH
+
   alias echopathtr='echo $PATH | tr ":" "\n"'
   alias ll='ls -lhF'
 
@@ -386,7 +416,7 @@ From:  ubuntu:16.04
   ####
 %files
   ####
-  members/*          /opt/
+  # TODO permissions will nbe 700 !
   documentation      /opt/
   tests              /opt/
 
@@ -413,41 +443,29 @@ From:  ubuntu:16.04
 
       cp /opt/patches/scripts/*   ./
       mv ./scbatchrc              ./.scbatchrc
-
       mkdir -p commands
       mv scbatch ./commands/
+
       cd commands
+      ln -sf scbatch scbatch_activate
       ln -sf scbatch scbatch_notebook
-      ln -sf scbatch scbatch_reset_password
-      ln -sf scbatch scbatch_reset_config
+      ln -sf scbatch scbatch_setpassword
+      ln -sf scbatch scbatch_setconfig
       ln -sf scbatch scbatch_getdataset
-      #ln -sf scbatch scbatch_getreference
+      ln -sf scbatch scbatch_getreference
 
-      ln -sf scbatch scbatch_basics
-      ln -sf scbatch scbatch_combatpy
-      ln -sf scbatch scbatch_fsclvm
-      ln -sf scbatch scbatch_limma
-      ln -sf scbatch scbatch_ruvseq
-      ln -sf scbatch scbatch_sclvm
-      ln -sf scbatch scbatch_scnorm
-      ln -sf scbatch scbatch_scran
-      ln -sf scbatch scbatch_seurat
-      ln -sf scbatch scbatch_svaseq
-      ln -sf scbatch scbatch_vamf
 
-      ln -sf scbatch scbatch_all_notebook
-
-      ln -sf scbatch scbatch_basics_notebook
-      ln -sf scbatch scbatch_combatpy_notebook
-      ln -sf scbatch scbatch_fsclvm_notebook
-      ln -sf scbatch scbatch_limma_notebook
-      ln -sf scbatch scbatch_ruvseq_notebook
-      ln -sf scbatch scbatch_sclvm_notebook
-      ln -sf scbatch scbatch_scnorm_notebook
-      ln -sf scbatch scbatch_scran_notebook
-      ln -sf scbatch scbatch_seurat_notebook
-      ln -sf scbatch scbatch_svaseq_notebook
-      ln -sf scbatch scbatch_vamf_notebook
+#      ln -sf scbatch scbatch_basics
+#      ln -sf scbatch scbatch_combatpy
+#      ln -sf scbatch scbatch_fsclvm
+#      ln -sf scbatch scbatch_limma
+#      ln -sf scbatch scbatch_ruvseq
+#      ln -sf scbatch scbatch_sclvm
+#      ln -sf scbatch scbatch_scnorm
+#      ln -sf scbatch scbatch_scran
+#      ln -sf scbatch scbatch_seurat
+#      ln -sf scbatch scbatch_svaseq
+#      ln -sf scbatch scbatch_vamf
 
       cd -
 

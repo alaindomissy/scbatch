@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+
+#set -o xtrace
+
+
+### These options hit a bug :
+### activate.sh fails if 'nounset' option is set
+### see: https://github.com/pypa/virtualenv/issues/150
+
+#set -o nounset
+#set -o errexit
+#set -o pipefail
+
+
+#jupyter notebook --NotebookApp.port=8754
+
+
+#scbatch_setconfig
+
+# see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
+
+source /opt/conda/envs/notebook/bin/activate notebook
+
+jupyter notebook --NotebookApp.ip=$(hostname --ip-address)
+    # --no-browser
+    #--NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'

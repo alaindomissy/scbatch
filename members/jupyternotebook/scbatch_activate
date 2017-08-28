@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+SCBATCHTOOL=$1
+
+source activate ${SCBATCHTOOL}
+bash
