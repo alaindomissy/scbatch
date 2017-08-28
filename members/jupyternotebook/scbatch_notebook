@@ -19,8 +19,9 @@
 
 # see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
 
-source /opt/conda/envs/notebook/bin/activate notebook
+#source /opt/conda/envs/notebook/bin/activate jupyternotebook
 
 jupyter notebook --NotebookApp.ip=$(hostname --ip-address)
+
     # --no-browser
     #--NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'

@@ -138,37 +138,33 @@ From:  ubuntu:16.04
     GITHUB=${10}
     URL=${11}
 
-    PYDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_python${PYVERSION}" | sed -e 's/ /_/g')
-    RDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_r${RVERSION}" | sed -e 's/ /_/g')
-
-    ENVPREFIX="/opt/conda/envs/${NAME}"
-    REXEC="${ENVPREFIX}/bin/R --no-restore --no-save -e"
-
-    PYKERNELSPEC='{"argv": ["'${ENVPREFIX}'/bin/python", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
-    RKERNELSPEC='{"argv": ["'${ENVPREFIX}'/lib/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
-
     PYTHONPACKAGE=""; if [ ${PYVERSION} != "none" ] ; then PYTHONPACKAGE="python=${PYVERSION}"; fi
     RBASEPACKAGE="" ; if [ ${RVERSION}  != "none" ] ; then RBASEPACKAGE="r-base=${RVERSION}"  ; fi
-
     conda create --yes --name ${NAME} ${CHANNELS} ${PYTHONPACKAGE} ${RBASEPACKAGE} ${PACKAGES}
     conda env export --name ${NAME} > /opt/condaenv/${NAME}_ROOTENV.yaml
-    # Conda Env Exception: Unable to determine environment
-    #${ENVPREFIX}/bin/conda env export   > /opt/condaenv/${NAME}_THISENV.yaml
 
+    ENVPYTHON="/opt/conda/envs/${NAME}/bin/python"
+    ENVR="/opt/conda/envs/${NAME}/lib/R/bin/R"
+    ENVPIPINSTALL="/opt/conda/envs/${NAME}/bin/pip"
+    ENVREXEC="/opt/conda/envs/${NAME}/bin/R --no-restore --no-save -e"
+
+    PYDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_python${PYVERSION}" | sed -e 's/ /_/g')
+    RDISPLAYNAME=$(echo "${NAME}_${DESCRIPTION}_v${VERSION}_r${RVERSION}" | sed -e 's/ /_/g')
+    PYKERNELSPEC='{"argv": ["${ENVPYTHON}", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv": ["${ENVR}", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
       echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
     fi
-
     if [ ${RVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/ir ${KERNELS}/"${NAME}_r"
       echo "${RKERNELSPEC}" > ${KERNELS}/"${NAME}_r"/kernel.json
     fi
 
-    if [ ${PIPS} != "none" ]    ; then ${ENVPREFIX}/bin/pip install "${PIPS}"           ; fi
-    if [ ${BIOCLITE} != "none" ]; then ${REXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
-    if [ ${GITHUB} != "none" ]  ; then ${REXEC} "devtools::install_github('${GITHUB}')" ; fi
-    if [ ${URL} != "none" ]     ; then ${REXEC} "devtools::install_url('${URL}')"       ; fi
+    if [ ${PIPS} != "none" ]    ; then ${ENVPIPINSTALL} "${PIPS}"                          ; fi
+    if [ ${BIOCLITE} != "none" ]; then ${ENVREXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
+    if [ ${GITHUB} != "none" ]  ; then ${ENVREXEC} "devtools::install_github('${GITHUB}')" ; fi
+    if [ ${URL} != "none" ]     ; then ${ENVREXEC} "devtools::install_url('${URL}')"       ; fi
     echo **********************************************************************
     touch /opt/donewith/${NAME}
     echo **********************************************************************
@@ -177,6 +173,20 @@ From:  ubuntu:16.04
 
 #  add_algorithm \
 #    ccremover \
+
+  # TODO r-devtools=1.12.0 version ?
+  add_algorithm \
+    citrus \
+    0.99.0 \
+    none \
+    3.4.1 \
+    "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
+    "-c r" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0" \
+    "none" \
+    "" \
+    "ChenMengjie/Citrus" \
+    "none"
 
   add_algorithm \
     combatpy \
@@ -222,19 +232,19 @@ From:  ubuntu:16.04
     none \
     none
 
-#  # r-irkernel ### TODO version ?
-#  add_algorithm \
-#    ruvseq \
-#    1.8.0 \
-#    "none" \
-#    3.3.1 \
-#    "Remove Unwanted Variation from RNA-Seq Data" \
-#    "-c bioconda -c pjones -c r" \
-#    "r-argparse=1.0.1 r-irkernel r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0" \
-#    none \
-#    none \
-#    none \
-#    none
+  # r-irkernel ### TODO version ?
+  add_algorithm \
+    ruvseq \
+    1.8.0 \
+    "none" \
+    3.3.1 \
+    "Remove Unwanted Variation from RNA-Seq Data" \
+    "-c bioconda -c pjones -c r" \
+    "r-argparse=1.0.1 r-irkernel r-devtools=1.11.1 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.8.0" \
+    none \
+    none \
+    none \
+    none
 
 #  # -c chasehere r-rpython
 #  # -c bioconda limix
@@ -255,6 +265,8 @@ From:  ubuntu:16.04
 #    #'/opt/conda/envs/sclvm/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
 #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
+
+  # TODO r-irkernel=0.7.1  version OK?
   add_algorithm \
     scnorm \
     0.99.7 \
@@ -262,25 +274,26 @@ From:  ubuntu:16.04
     3.4.1 \
     "Robust normalization of single-cell RNA-seq data" \
     "-c bioconda -c r -c kurtwheeler" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
     none \
     none \
     none \
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
-#  # -c kurtwheeler bioconductor-biocinstaller=1.26.0
-#  add_algorithm \
-#    scone \
-#    1.1.2 \
-#    "none" \
-#    3.4.1 \
-#    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses." \
-#    "-c r -c bioconda -c kurtwheeler" \
-#    "r-argparse=1.0.4 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
-#    none \
-#    "scone" \
-#    none \
-#    none
+  # -c kurtwheeler bioconductor-biocinstaller=1.26.0
+  # TODO r-irkernel=0.7.1  version OK?
+  add_algorithm \
+    scone \
+    1.1.2 \
+    "none" \
+    3.4.1 \
+    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses." \
+    "-c r -c bioconda -c kurtwheeler" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0" \
+    none \
+    "scone" \
+    none \
+    none
 
   add_algorithm \
     scran \
@@ -289,16 +302,18 @@ From:  ubuntu:16.04
     3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data" \
     "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.16 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
     none \
     "scran" \
     none \
     none
 
 #  # r-irkernel=0.7.1
-#  # r-rcpp=0.12.11
+#  # r-rbase=       r-rbase=3.3.2
+#  # r-rcpp=0.12.11 r-rcpp=0.12.8
 #  # "r-argparse=1.0.4 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0 python=3.6.2 jupyter=1.0.0"
-#  add_algorithm basics \
+#  add_algorithm \
+#     basics \
 #     0.7.27 \
 #    "none" \
 #     3.3.2 \
@@ -310,14 +325,15 @@ From:  ubuntu:16.04
 #    "catavallejos/BASiCS" \
 #    "none"
 
+  # TODO r-irkernel=0.7.1  version OK?
   add_algorithm \
     seurat \
     2.0.0 \
     "none" \
     3.4.1 \
-    "QC, analysis, and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
+    "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
     "-c r" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.13.2" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2" \
     none \
     none \
     "satijalab/seurat" \
@@ -336,17 +352,19 @@ From:  ubuntu:16.04
     none \
     none
 
+
+  # r-base=3.3 ?
   add_algorithm \
     vamf \
     0.0.20170804 \
     "none" \
-    3.3 \
-    "Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
+    3.4.1 \
+    "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rstan=2.15.1" \
     none \
     none \
-    none \
+    "willtownes/vamf" \
     none
 
   touch /opt/donewith/members_envs
