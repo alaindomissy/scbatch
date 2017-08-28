@@ -90,16 +90,16 @@ From:  ubuntu:16.04
   # this is required here as the environment section is not processed yet
   PATH=/opt/conda/bin:$PATH
   export PATH
-  echo ************************************************************************
+  echo "======================================================================"
   touch /opt/donewith/conda
-  echo ************************************************************************
+  echo "======================================================================"
 
 
   # jupyter=1.0.0
-  echo ************************************************************************
+  echo "======================================================================"
   NAME=jupyternotebook
   VERSION=5.0.0
-  echo ************************************************************************
+  echo "======================================================================"
   conda create --yes -n jupyternotebook python=3.6.2 notebook=5.0.0
   conda env export -n jupyternotebook > /opt/condaenv/jupyternotebook-5.0.0.yaml
   PATH="/opt/conda/envs/jupyternotebook/bin:$PATH"
@@ -109,9 +109,9 @@ From:  ubuntu:16.04
   KERNELS=${JUPYTER_PATH}/kernels
   export KERNELS
   mkdir -p $KERNELS
-  echo ************************************************************************
+  echo "======================================================================"
   touch /opt/donewith/jupyternotebook
-  echo ************************************************************************
+  echo "======================================================================"
 
 
 
@@ -124,10 +124,10 @@ From:  ubuntu:16.04
 
   add_algorithm()
   {
-    echo **********************************************************************
+    echo "===================================================================="
     NAME=$1
     VERSION=$2
-    echo **********************************************************************=
+    echo "===================================================================="
     PYVERSION=$3
     RVERSION=$4
     DESCRIPTION=$5
@@ -165,9 +165,9 @@ From:  ubuntu:16.04
     if [ ${BIOCLITE} != "none" ]; then ${ENVREXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
     if [ ${GITHUB} != "none" ]  ; then ${ENVREXEC} "devtools::install_github('${GITHUB}')" ; fi
     if [ ${URL} != "none" ]     ; then ${ENVREXEC} "devtools::install_url('${URL}')"       ; fi
-    echo **********************************************************************
+    echo "===================================================================="
     touch /opt/donewith/${NAME}
-    echo **********************************************************************
+    echo "===================================================================="
   }
 
 
@@ -295,6 +295,7 @@ From:  ubuntu:16.04
     none \
     none
 
+   # TODO r-knitr=1.16 version?
   add_algorithm \
     scran \
     1.4.5 \
@@ -302,7 +303,7 @@ From:  ubuntu:16.04
     3.3.2 \
     "Implements a variety of low-level analyses of single-cell RNA-seq data" \
     "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.16 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
     none \
     "scran" \
     none \
@@ -435,7 +436,7 @@ From:  ubuntu:16.04
 
   set -o xtrace
   set -o nounset
-  set -o errexit
+  #set -o errexit
   #set -o pipefail
 
   if [ $# -eq 0 ]
