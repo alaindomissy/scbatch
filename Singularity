@@ -174,7 +174,6 @@ From:  ubuntu:16.04
 #  add_algorithm \
 #    ccremover \
 
-  # TODO r-devtools=1.12.0 version ?
   add_algorithm \
     citrus \
     0.99.0 \
@@ -182,7 +181,7 @@ From:  ubuntu:16.04
     3.4.1 \
     "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
     "-c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0" \
     "none" \
     "" \
     "ChenMengjie/Citrus" \
@@ -266,7 +265,6 @@ From:  ubuntu:16.04
 #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
 
-  # TODO r-irkernel=0.7.1  version OK?
   add_algorithm \
     scnorm \
     0.99.7 \
@@ -281,7 +279,6 @@ From:  ubuntu:16.04
     "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
   # -c kurtwheeler bioconductor-biocinstaller=1.26.0
-  # TODO r-irkernel=0.7.1  version OK?
   add_algorithm \
     scone \
     1.1.2 \
@@ -326,7 +323,6 @@ From:  ubuntu:16.04
 #    "catavallejos/BASiCS" \
 #    "none"
 
-  # TODO r-irkernel=0.7.1  version OK?
   add_algorithm \
     seurat \
     2.0.0 \
@@ -362,7 +358,7 @@ From:  ubuntu:16.04
     3.4.1 \
     "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
     "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-rstan=2.15.1" \
+    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1" \
     none \
     none \
     "willtownes/vamf" \
