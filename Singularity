@@ -174,6 +174,49 @@ From:  ubuntu:16.04
 
 
 
+#  add_algorithm \
+#    ccremover \
+
+
+
+
+
+
+
+#  # r-rbase=       r-rbase=3.3.2
+#  # r-rcpp=0.12.11 r-rcpp=0.12.8
+
+#  add_algorithm \
+#     basics \
+#     0.7.27 \
+#    "none" \
+#     3.3.2 \
+#    "Bayesian Analysis of Single-Cell Sequencing Data" \
+#    "-c r -c bioconda" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
+#    "none" \
+#    "scran" \
+#    "catavallejos/BASiCS" \
+#    "none"
+
+#  #
+#  #  '/opt/conda/envs/basics/lib/R/bin/R' --no-site-file --no-environ --no-save  \
+#  #    --no-restore --quiet CMD INSTALL  \
+#  #    '/tmp/RtmpSyaYl5/devtools299a7f9af35f/catavallejos-BASiCS-7ecd7f2'  \
+#  #    --library='/opt/conda/envs/basics/lib/R/library' --install-tests
+#  #
+#  #  ERROR: dependency 'scran' is not available for package 'BASiCS'
+#  #  * removing '/opt/conda/envs/basics/lib/R/library/BASiCS'
+
+
+
+
+
+
+
+
+
+
 #library(statmod)
 #require(ggplot2)
 #library(gplots)
@@ -209,8 +252,6 @@ From:  ubuntu:16.04
 
 
 
-#  add_algorithm \
-#    ccremover \
 
 
   add_algorithm citrus \
@@ -315,20 +356,9 @@ From:  ubuntu:16.04
     none \
     none
 
-#  # r-rbase=       r-rbase=3.3.2
-#  # r-rcpp=0.12.11 r-rcpp=0.12.8
-  add_algorithm \
-     basics \
-     0.7.27 \
-    "none" \
-     3.3.2 \
-    "Bayesian Analysis of Single-Cell Sequencing Data" \
-    "-c r -c bioconda" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
-    "none" \
-    "scran" \
-    "catavallejos/BASiCS" \
-    "none"
+
+
+
 
   add_algorithm \
     seurat \
