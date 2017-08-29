@@ -156,6 +156,8 @@ From:  ubuntu:16.04
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
       echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
+#      ${ENVPYTHON} -m pip uninstall ipykernel
+#      ${ENVPYTHON} -m pip install ipykernel
     fi
     if [ ${RVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/ir ${KERNELS}/"${NAME}_r"
@@ -305,7 +307,7 @@ From:  ubuntu:16.04
           3.3 \
           "Combatting batch effects when combining batches of gene expression microarray data" \
           "-c bioconda -c r" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 ipykernel=4.6.1" \
           "none" \
           "bladderbatch" \
           "none" \
@@ -317,7 +319,7 @@ From:  ubuntu:16.04
           3.3.2 \
           "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors" \
           "-c defaults" \
-          "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0" \
+          "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 ipykernel=4.6.1" \
           "fscLVM==1.0.0.dev10" \
           none \
           none \
@@ -367,19 +369,19 @@ From:  ubuntu:16.04
           none \
           "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
-        # -c kurtwheeler bioconductor-biocinstaller=1.26.0
-        add_algorithm \
-          scone \
-          1.1.2 \
-          "none" \
-          3.4.1 \
-          "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
-          "-c r -c bioconda -c kurtwheeler" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
-          none \
-          "scone" \
-          none \
-          none
+#        # -c kurtwheeler bioconductor-biocinstaller=1.26.0
+#        add_algorithm \
+#          scone \
+#          1.1.2 \
+#          "none" \
+#          3.4.1 \
+#          "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
+#          "-c r -c bioconda -c kurtwheeler" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
+#          none \
+#          "scone" \
+#          none \
+#          none
 #
 #        # TODO r-irkernel=0.7.1 OK ?
 #        add_algorithm \
@@ -531,9 +533,9 @@ From:  ubuntu:16.04
       echo ======================
       echo
 
-      mkdir TEST
-      cd TEST
-      scbatch_notebook
+#      mkdir TEST
+#      cd TEST
+#      scbatch_notebook
 
   else
       echo "scbatch image called with run and some arguments - did you mean to exec instead ?"
