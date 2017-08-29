@@ -26,6 +26,7 @@ From:  ubuntu:16.04
   mkdir -p $SINGULARITY_ROOTFS/opt/datasets
   mkdir -p $SINGULARITY_ROOTFS/opt/members
   mkdir -p $SINGULARITY_ROOTFS/opt/patches
+  mkdir -p $SINGULARITY_ROOTFS/opt/demos/
 
   # these are needed early for post section
   cp -r ./datasets/* $SINGULARITY_ROOTFS/opt/datasets/
@@ -33,7 +34,6 @@ From:  ubuntu:16.04
   cp -r ./patches/*  $SINGULARITY_ROOTFS/opt/patches/
 
   cp -r ./demos/*    $SINGULARITY_ROOTFS/opt/demos/
-  cp -r ./kernels/*  $SINGULARITY_ROOTFS/opt/kernels/
 
   ###
 %post
