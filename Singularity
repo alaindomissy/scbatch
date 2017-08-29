@@ -313,10 +313,11 @@ From:  ubuntu:16.04
           "none" \
           "none"
 
+        # TODO r-base=3.3.2 not needed?
         add_algorithm fsclvm \
           1.0.0.dev10 \
           3.6.2 \
-          3.3.2 \
+          "none" \
           "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors" \
           "-c defaults" \
           "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 ipykernel=4.6.1" \
@@ -325,30 +326,30 @@ From:  ubuntu:16.04
           none \
           none
 
-#        add_algorithm limma \
-#          3.30.13 \
-#          "none" \
-#          3.3.2 \
-#          "Linear Models for Microarray and RNA-Seq Data" \
-#          "-c bioconda -c r" \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
-#          none \
-#          none \
-#          none \
-#          none
-#
-#        # TODO -c pjones whar was that for ?
-#        add_algorithm ruvseq \
-#          1.8.0 \
-#          "none" \
-#          3.3.2 \
-#          "Remove Unwanted Variation from RNA-Seq Data" \
-#          "-c bioconda  -c r" \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
-#          none \
-#          none \
-#          none \
-#          none
+        add_algorithm limma \
+          3.30.13 \
+          "none" \
+          3.3.2 \
+          "Linear Models for Microarray and RNA-Seq Data" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
+          none \
+          none \
+          none \
+          none
+
+        # TODO -c pjones whar was that for ?
+        add_algorithm ruvseq \
+          1.8.0 \
+          "none" \
+          3.3.2 \
+          "Remove Unwanted Variation from RNA-Seq Data" \
+          "-c bioconda  -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
+          none \
+          none \
+          none \
+          none
 
 
 
@@ -356,18 +357,18 @@ From:  ubuntu:16.04
 # ERROR: dependencies 'quantreg', 'cluster', 'SummarizedExperiment' are not available for package 'SCnorm'
 # bioconductor-summarizedexperiment 1.4.0* -> bioconductor-biobase -> bioconductor-biocgenerics >=0.3.2 -> r 3.2.2* -> r-base 3.2.2
 # https://bioconductor.org/packages/release/bioc/src/contrib/SummarizedExperiment_1.6.3.tar.gz
-        add_algorithm \
-          scnorm \
-          0.99.7 \
-          "none" \
-          3.4.1 \
-          "Robust normalization of single-cell RNA-seq data" \
-          "-c bioconda -c r -c kurtwheeler" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 r-quantreg=5.33 r-cluster=2.0.6" \
-          none \
-          "SummarizedExperiment" \
-          none \
-          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
+#        add_algorithm \
+#          scnorm \
+#          0.99.7 \
+#          "none" \
+#          3.4.1 \
+#          "Robust normalization of single-cell RNA-seq data" \
+#          "-c bioconda -c r -c kurtwheeler" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 r-quantreg=5.33 r-cluster=2.0.6" \
+#          none \
+#          "SummarizedExperiment" \
+#          none \
+#          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
 #        # -c kurtwheeler bioconductor-biocinstaller=1.26.0
 #        add_algorithm \
@@ -382,50 +383,50 @@ From:  ubuntu:16.04
 #          "scone" \
 #          none \
 #          none
-#
-#        # TODO r-irkernel=0.7.1 OK ?
-#        add_algorithm \
-#          scran \
-#          1.4.5 \
-#          "none" \
-#          3.3.2 \
-#          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
-#          "-c r -c bioconda " \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
-#          none \
-#          "scran" \
-#          none \
-#          none
-#
-#
-#
-#
-#        add_algorithm \
-#          svaseq \
-#          1.8.0 \
-#          "none" \
-#          3.3 \
-#          "Removing batch effects and other unwanted variation in high-throughput experiments" \
-#          "-c bioconda -c r" \
-#          "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
-#          none \
-#          none \
-#          none \
-#          none
-#
-#
-#        add_algorithm \
-#          vamf \
-#          0.0.20170804 \
-#          "none" \
-#          3.4.1 \
-#          "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
-#          "-c bioconda -c r" \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
-#          none \
-#          none \
-#          "willtownes/vamf" \
-#          none
+
+        # TODO r-irkernel=0.7.1 OK ?
+        add_algorithm \
+          scran \
+          1.4.5 \
+          "none" \
+          3.3.2 \
+          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
+          "-c r -c bioconda " \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+          none \
+          "scran" \
+          none \
+          none
+
+
+
+
+        add_algorithm \
+          svaseq \
+          1.8.0 \
+          "none" \
+          3.3 \
+          "Removing batch effects and other unwanted variation in high-throughput experiments" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
+          none \
+          none \
+          none \
+          none
+
+
+        add_algorithm \
+          vamf \
+          0.0.20170804 \
+          "none" \
+          3.4.1 \
+          "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
+          none \
+          none \
+          "willtownes/vamf" \
+          none
 
   touch /opt/donewith/members_envs
 
