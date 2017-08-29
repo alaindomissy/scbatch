@@ -383,20 +383,20 @@ From:  ubuntu:16.04
 #          "scone" \
 #          none \
 #          none
-#
-#        # TODO r-irkernel=0.7.1 OK ?
-#        add_algorithm \
-#          scran \
-#          1.4.5 \
-#          "none" \
-#          3.3.2 \
-#          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
-#          "-c r -c bioconda " \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
-#          none \
-#          "scran" \
-#          none \
-#          none
+
+        # TODO r-irkernel=0.7.1 OK ?
+        add_algorithm \
+          scran \
+          1.4.5 \
+          "none" \
+          3.3.2 \
+          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
+          "-c r -c bioconda " \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+          none \
+          "scran" \
+          none \
+          none
 
 
 
