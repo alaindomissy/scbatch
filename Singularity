@@ -151,7 +151,7 @@ From:  ubuntu:16.04
 
     PYDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} python${PYVERSION}")                #  | sed -e 's/ /_/g'
     RDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} r${RVERSION}" )
-    PYKERNELSPEC='{"argv": ["'${ENVPYTHON}'", "-m", ""ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    PYKERNELSPEC='{"argv": ["'${ENVPYTHON}'", "-m", "ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
     RKERNELSPEC='{"argv": ["'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
@@ -287,17 +287,17 @@ From:  ubuntu:16.04
 
 
 
-        add_algorithm citrus \
-          0.99.0 \
-          none \
-          3.4.1 \
-          "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
-          "-c r" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0 r-cairo=1.5_9" \
-          "none" \
-          "none" \
-          "ChenMengjie/Citrus" \
-          "none"
+#        add_algorithm citrus \
+#          0.99.0 \
+#          none \
+#          3.4.1 \
+#          "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
+#          "-c r" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0 r-cairo=1.5_9" \
+#          "none" \
+#          "none" \
+#          "ChenMengjie/Citrus" \
+#          "none"
 
         add_algorithm combatpy \
           0.0.20170804 \
@@ -323,30 +323,30 @@ From:  ubuntu:16.04
           none \
           none
 
-        add_algorithm limma \
-          3.30.13 \
-          "none" \
-          3.3.2 \
-          "Linear Models for Microarray and RNA-Seq Data" \
-          "-c bioconda -c r" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
-          none \
-          none \
-          none \
-          none
-
-        # TODO -c pjones whar was that for ?
-        add_algorithm ruvseq \
-          1.8.0 \
-          "none" \
-          3.3.2 \
-          "Remove Unwanted Variation from RNA-Seq Data" \
-          "-c bioconda  -c r" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
-          none \
-          none \
-          none \
-          none
+#        add_algorithm limma \
+#          3.30.13 \
+#          "none" \
+#          3.3.2 \
+#          "Linear Models for Microarray and RNA-Seq Data" \
+#          "-c bioconda -c r" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
+#          none \
+#          none \
+#          none \
+#          none
+#
+#        # TODO -c pjones whar was that for ?
+#        add_algorithm ruvseq \
+#          1.8.0 \
+#          "none" \
+#          3.3.2 \
+#          "Remove Unwanted Variation from RNA-Seq Data" \
+#          "-c bioconda  -c r" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
+#          none \
+#          none \
+#          none \
+#          none
 
 
 
@@ -380,52 +380,50 @@ From:  ubuntu:16.04
           "scone" \
           none \
           none
-
-        # TODO r-irkernel=0.7.1 OK ?
-        add_algorithm \
-          scran \
-          1.4.5 \
-          "none" \
-          3.3.2 \
-          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
-          "-c r -c bioconda " \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
-          none \
-          "scran" \
-          none \
-          none
-
-
-
-
-
-
-        add_algorithm \
-          svaseq \
-          1.8.0 \
-          "none" \
-          3.3 \
-          "Removing batch effects and other unwanted variation in high-throughput experiments" \
-          "-c bioconda -c r" \
-          "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
-          none \
-          none \
-          none \
-          none
-
-
-        add_algorithm \
-          vamf \
-          0.0.20170804 \
-          "none" \
-          3.4.1 \
-          "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
-          "-c bioconda -c r" \
-          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
-          none \
-          none \
-          "willtownes/vamf" \
-          none
+#
+#        # TODO r-irkernel=0.7.1 OK ?
+#        add_algorithm \
+#          scran \
+#          1.4.5 \
+#          "none" \
+#          3.3.2 \
+#          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
+#          "-c r -c bioconda " \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+#          none \
+#          "scran" \
+#          none \
+#          none
+#
+#
+#
+#
+#        add_algorithm \
+#          svaseq \
+#          1.8.0 \
+#          "none" \
+#          3.3 \
+#          "Removing batch effects and other unwanted variation in high-throughput experiments" \
+#          "-c bioconda -c r" \
+#          "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
+#          none \
+#          none \
+#          none \
+#          none
+#
+#
+#        add_algorithm \
+#          vamf \
+#          0.0.20170804 \
+#          "none" \
+#          3.4.1 \
+#          "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
+#          "-c bioconda -c r" \
+#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
+#          none \
+#          none \
+#          "willtownes/vamf" \
+#          none
 
   touch /opt/donewith/members_envs
 
@@ -433,7 +431,7 @@ From:  ubuntu:16.04
   # cleanup ???M
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
   #chmod --recursive --changes +755 /opt/*
-  chmod --recursive --changes +755 /opt/*
+  chmod --recursive +755 /opt/*
 
   touch /opt/donewith/condaenvexportroot_condaclean_chmod
 
@@ -510,32 +508,32 @@ From:  ubuntu:16.04
       ln -sf ${IMAGENAME} scbatch.img
 
       cp /opt/patches/scripts/*   ./
-      mv ./scbatchrc              ./.scbatchrc
-      mkdir -p commands
-      mv scbatch ./commands/
+      #mv ./scbatchrc              ./.scbatchrc
 
-      cd commands
-
+      #mkdir -p commands
+      #mv scbatch ./commands/
+      #cd commands
       ln -sf scbatch scbatch_activate
-
       ln -sf scbatch scbatch_getdataset
       ln -sf scbatch scbatch_getreference
-
       ln -sf scbatch scbatch_notebook
       ln -sf scbatch scbatch_setpassword
       ln -sf scbatch scbatch_setconfig
-
-      cd -
+      #cd -
 
       echo
       echo ======================
       echo please type:
       echo
-      echo        source .scbatchrc
+      echo        source scbatchrc
       echo
       echo and enjoy scbatch!
       echo ======================
       echo
+
+      mkdir TEST
+      cd TEST
+      scbatch_notebook
 
   else
       echo "scbatch image called with run and some arguments - did you mean to exec instead ?"

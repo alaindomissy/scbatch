@@ -13,7 +13,8 @@ ARG="$@"
 
 #--home ../SCBATCH_HOME --workdir ../SCBATCH_HOME
 
-singularity exec --cleanenv  $DIR/../scbatch.img $CMD $ARG
+#singularity exec --cleanenv  $DIR/../scbatch.img $CMD $ARG
+singularity exec --cleanenv  $DIR/scbatch.img $CMD $ARG
 
 # set +x
 
