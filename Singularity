@@ -32,6 +32,9 @@ From:  ubuntu:16.04
   cp -r ./members/*  $SINGULARITY_ROOTFS/opt/members/
   cp -r ./patches/*  $SINGULARITY_ROOTFS/opt/patches/
 
+  cp -r ./demos/*    $SINGULARITY_ROOTFS/opt/demos/
+  cp -r ./kernels/*  $SINGULARITY_ROOTFS/opt/kernels/
+
   ###
 %post
   ###
@@ -178,52 +181,15 @@ From:  ubuntu:16.04
 
 
 
-####  TODO  seurat needs to do URL before GITHUB
-
-#    # 3.4.1
-#    # r-fpc 2.1_10* -> r-base 3.3.2*
-#    # r-devtools=1.13.2
-##############################################################################################
-#    # r-compositions  https://cran.r-project.org/src/contrib/compositions_1.40-1.tar.gz
-#    # r-diffusionMap  https://cran.r-project.org/src/contrib/diffusionMap_1.1-0.tar.gz
-##############################################################################################
-#    # -c bioconda r-fpc=2.1_10
-#
-#    #During startup - Warning messages:
-#    #1: Setting LC_CTYPE failed, using "C"
-#    #2: Setting LC_TIME failed, using "C"
-#    #3: Setting LC_MESSAGES failed, using "C"
-#    #4: Setting LC_MONETARY failed, using "C"
-#    #5: Setting LC_PAPER failed, using "C"
-#    #6: Setting LC_MEASUREMENT failed, using "C"
-#      add_algorithm seurat \
-#        2.0.0 \
-#        "none" \
-#        3.3.2\
-#        "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
-#        "-c r -c bioconda" \
-#        "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9 r-ROCR r-lars=1.2 r-fpc=2.1_10 r-ape=4.0 r-VGAM=1.0_2 r-igraph=1.0.1 r-caret=6.0_73 r-gplots=3.0.1  r-NMF=0.20.6 r-plotly=4.5.6  r-Hmisc" \
-#        none \
-#        none \
-#        "satijalab/seurat" \
-#        "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
-
-
-
-
-
-
-
 #
 #      #  add_algorithm \
 #      #    ccremover \
-#
-#
-#
-#
-#
-#
-#
+
+
+
+
+
+
 #      #  # r-rbase=       r-rbase=3.3.2
 #      #  # r-rcpp=0.12.11 r-rcpp=0.12.8
 #
@@ -285,10 +251,6 @@ From:  ubuntu:16.04
 
 
 
-
-
-
-
 #        add_algorithm citrus \
 #          0.99.0 \
 #          none \
@@ -313,7 +275,6 @@ From:  ubuntu:16.04
           "none" \
           "none"
 
-        # TODO r-base=3.3.2 not needed?
         add_algorithm fsclvm \
           1.0.0.dev10 \
           3.6.2 \
@@ -357,8 +318,7 @@ From:  ubuntu:16.04
 # ERROR: dependencies 'quantreg', 'cluster', 'SummarizedExperiment' are not available for package 'SCnorm'
 # bioconductor-summarizedexperiment 1.4.0* -> bioconductor-biobase -> bioconductor-biocgenerics >=0.3.2 -> r 3.2.2* -> r-base 3.2.2
 # https://bioconductor.org/packages/release/bioc/src/contrib/SummarizedExperiment_1.6.3.tar.gz
-#        add_algorithm \
-#          scnorm \
+#        add_algorithm scnorm \
 #          0.99.7 \
 #          "none" \
 #          3.4.1 \
@@ -371,8 +331,7 @@ From:  ubuntu:16.04
 #          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
 
         # -c kurtwheeler bioconductor-biocinstaller=1.26.0
-#        add_algorithm \
-#          scone \
+#        add_algorithm scone \
 #          1.1.2 \
 #          "none" \
 #          3.4.1 \
@@ -384,7 +343,7 @@ From:  ubuntu:16.04
 #          none \
 #          none
 
-        # TODO r-irkernel=0.7.1 OK ?
+
         add_algorithm \
           scran \
           1.4.5 \
@@ -397,6 +356,41 @@ From:  ubuntu:16.04
           "scran" \
           none \
           none
+
+
+
+
+####  TODO  seurat needs to do URL before GITHUB
+
+#    # 3.4.1
+#    # r-fpc 2.1_10* -> r-base 3.3.2*
+#    # r-devtools=1.13.2
+##############################################################################################
+#    # r-compositions  https://cran.r-project.org/src/contrib/compositions_1.40-1.tar.gz
+#    # r-diffusionMap  https://cran.r-project.org/src/contrib/diffusionMap_1.1-0.tar.gz
+##############################################################################################
+#    # -c bioconda r-fpc=2.1_10
+#
+#    #During startup - Warning messages:
+#    #1: Setting LC_CTYPE failed, using "C"
+#    #2: Setting LC_TIME failed, using "C"
+#    #3: Setting LC_MESSAGES failed, using "C"
+#    #4: Setting LC_MONETARY failed, using "C"
+#    #5: Setting LC_PAPER failed, using "C"
+#    #6: Setting LC_MEASUREMENT failed, using "C"
+#      add_algorithm seurat \
+#        2.0.0 \
+#        "none" \
+#        3.3.2\
+#        "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
+#        "-c r -c bioconda" \
+#        "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9 r-ROCR r-lars=1.2 r-fpc=2.1_10 r-ape=4.0 r-VGAM=1.0_2 r-igraph=1.0.1 r-caret=6.0_73 r-gplots=3.0.1  r-NMF=0.20.6 r-plotly=4.5.6  r-Hmisc" \
+#        none \
+#        none \
+#        "satijalab/seurat" \
+#        "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
+
+
 
 
 
@@ -495,7 +489,11 @@ From:  ubuntu:16.04
   # this will get copied to /.singularity.d/runscript indide the container
   # which will run whenever the container is called as an executable
 
-  set -o xtrace
+  echo "======================================================================"
+  echo "container image downloaded, now setting shortcuts"
+  echo "======================================================================"
+
+  #set -o xtrace
   set -o nounset
   #set -o errexit
   #set -o pipefail
@@ -509,6 +507,10 @@ From:  ubuntu:16.04
       IMAGENAME=scbatch_${IDATE}_${SINGULARITY_NAME}
       mv ${SINGULARITY_NAME} ${IMAGENAME}
       ln -sf ${IMAGENAME} scbatch.img
+
+
+     cp -r /opt/patches/demos   ./demos
+     cp -r ${KERNELS}           ./kernels
 
       cp /opt/patches/scripts/*   ./
       #mv ./scbatchrc              ./.scbatchrc
@@ -536,7 +538,7 @@ From:  ubuntu:16.04
 
 #      mkdir TEST
 #      cd TEST
-#      scbatch_notebook
+       scbatch_notebook
 
   else
       echo "scbatch image called with run and some arguments - did you mean to exec instead ?"
