@@ -50,6 +50,7 @@ From:  ubuntu:16.04
   # UBUNTU
   apt-get -y update
   apt-get -y install make gcc g++ zlib1g-dev libncurses5-dev nano unzip
+  apt-get install -y xorg
   # cleanup   x? M
   apt-get clean
   g++ --version
@@ -165,6 +166,7 @@ From:  ubuntu:16.04
     if [ "${BIOCLITE}" != "none" ]; then ${ENVREXEC} "BiocInstaller::biocLite('${BIOCLITE}')"; fi
     if [ "${GITHUB}"   != "none" ]; then ${ENVREXEC} "devtools::install_github('${GITHUB}')" ; fi
     if [ "${URL}"      != "none" ]; then ${ENVREXEC} "devtools::install_url('${URL}')"       ; fi
+
     echo "===================================================================="
     touch /opt/donewith/${NAME}
     echo "===================================================================="
@@ -174,8 +176,35 @@ From:  ubuntu:16.04
 
 
 
-#  add_algorithm \
-#    ccremover \
+####  TODO  seurat needs to do URL before GITHUB
+
+#    # 3.4.1
+#    # r-fpc 2.1_10* -> r-base 3.3.2*
+#    # r-devtools=1.13.2
+##############################################################################################
+#    # r-compositions  https://cran.r-project.org/src/contrib/compositions_1.40-1.tar.gz
+#    # r-diffusionMap  https://cran.r-project.org/src/contrib/diffusionMap_1.1-0.tar.gz
+##############################################################################################
+#    # -c bioconda r-fpc=2.1_10
+#
+#    #During startup - Warning messages:
+#    #1: Setting LC_CTYPE failed, using "C"
+#    #2: Setting LC_TIME failed, using "C"
+#    #3: Setting LC_MESSAGES failed, using "C"
+#    #4: Setting LC_MONETARY failed, using "C"
+#    #5: Setting LC_PAPER failed, using "C"
+#    #6: Setting LC_MEASUREMENT failed, using "C"
+#      add_algorithm seurat \
+#        2.0.0 \
+#        "none" \
+#        3.3.2\
+#        "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
+#        "-c r -c bioconda" \
+#        "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9 r-ROCR r-lars=1.2 r-fpc=2.1_10 r-ape=4.0 r-VGAM=1.0_2 r-igraph=1.0.1 r-caret=6.0_73 r-gplots=3.0.1  r-NMF=0.20.6 r-plotly=4.5.6  r-Hmisc" \
+#        none \
+#        none \
+#        "satijalab/seurat" \
+#        "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
 
 
 
@@ -183,228 +212,227 @@ From:  ubuntu:16.04
 
 
 
-#  # r-rbase=       r-rbase=3.3.2
-#  # r-rcpp=0.12.11 r-rcpp=0.12.8
-
-#  add_algorithm \
-#     basics \
-#     0.7.27 \
-#    "none" \
-#     3.3.2 \
-#    "Bayesian Analysis of Single-Cell Sequencing Data" \
-#    "-c r -c bioconda" \
-#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
-#    "none" \
-#    "scran" \
-#    "catavallejos/BASiCS" \
-#    "none"
-
-#  #
-#  #  '/opt/conda/envs/basics/lib/R/bin/R' --no-site-file --no-environ --no-save  \
-#  #    --no-restore --quiet CMD INSTALL  \
-#  #    '/tmp/RtmpSyaYl5/devtools299a7f9af35f/catavallejos-BASiCS-7ecd7f2'  \
-#  #    --library='/opt/conda/envs/basics/lib/R/library' --install-tests
-#  #
-#  #  ERROR: dependency 'scran' is not available for package 'BASiCS'
-#  #  * removing '/opt/conda/envs/basics/lib/R/library/BASiCS'
-
-
-
-
-
-
-
-
-
-
-#library(statmod)
-#require(ggplot2)
-#library(gplots)
-#require(DESeq2)
-#library(scLVM)
-
-#  # -c chasehere r-rpython
-#  # -c bioconda limix
-#  # -c conda-forge gpy
-
-#  # r-argparse
-
-#  # hdf5
-
-##  r-rpython=0.0_ neeeds rbase-3.2.2  !!
-#  add_algorithm \
-#    sclvm \
-#    0.1.8 \
-#    2.7.13 \
-#    3.2.2 \
-#    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation" \
-#    "-c r -c bioconda -c chasehere -c conda-forge" \
-#    "r-irkernel  h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-statmod=1.4.29 r-gplots=3.0.1 bioconductor-deseq2=1.14.1 bioconductor-genefilter=1.58.1" \
-#    "scLVM==0.1.8" \
-#    "none" \
-#    "none" \
-#    "none"
-
-#    #'/opt/conda/envs/sclvm/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
-#    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
+#
+#      #  add_algorithm \
+#      #    ccremover \
+#
+#
+#
+#
+#
+#
+#
+#      #  # r-rbase=       r-rbase=3.3.2
+#      #  # r-rcpp=0.12.11 r-rcpp=0.12.8
+#
+#      #  add_algorithm basics \
+#      #     0.7.27 \
+#      #    "none" \
+#      #     3.3.2 \
+#      #    "Bayesian Analysis of Single-Cell Sequencing Data" \
+#      #    "-c r -c bioconda" \
+#      #    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0  r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 r-rcpp=0.12.8 bioconductor-biocgenerics=0.20.0" \
+#      #    "none" \
+#      #    "scran" \
+#      #    "catavallejos/BASiCS" \
+#      #    "none"
+#
+#      #  #
+#      #  #  '/opt/conda/envs/basics/lib/R/bin/R' --no-site-file --no-environ --no-save  \
+#      #  #    --no-restore --quiet CMD INSTALL  \
+#      #  #    '/tmp/RtmpSyaYl5/devtools299a7f9af35f/catavallejos-BASiCS-7ecd7f2'  \
+#      #  #    --library='/opt/conda/envs/basics/lib/R/library' --install-tests
+#      #  #
+#      #  #  ERROR: dependency 'scran' is not available for package 'BASiCS'
+#      #  #  * removing '/opt/conda/envs/basics/lib/R/library/BASiCS'
+#
 
 
 
 
 
+      #library(statmod)
+      #require(ggplot2)
+      #library(gplots)
+      #require(DESeq2)
+      #library(scLVM)
 
+      #  # -c chasehere r-rpython
+      #  # -c bioconda limix
+      #  # -c conda-forge gpy
 
-  add_algorithm citrus \
-    0.99.0 \
-    none \
-    3.4.1 \
-    "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
-    "-c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0 r-cairo=1.5_9" \
-    "none" \
-    "none" \
-    "ChenMengjie/Citrus" \
-    "none"
+      #  # r-argparse
 
-  add_algorithm combatpy \
-    0.0.20170804 \
-    3.6.2 \
-    3.3 \
-    "Combatting batch effects when combining batches of gene expression microarray data" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1" \
-    "none" \
-    "bladderbatch" \
-    "none" \
-    "none"
+      #  # hdf5
 
-  add_algorithm fsclvm \
-    1.0.0.dev10 \
-    3.6.2 \
-    3.3.2 \
-    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors" \
-    "-c defaults" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0" \
-    "fscLVM==1.0.0.dev10" \
-    none \
-    none \
-    none
+      ##  r-rpython=0.0_ neeeds rbase-3.2.2  !!
+      #  add_algorithm sclvm \
+      #    0.1.8 \
+      #    2.7.13 \
+      #    3.2.2 \
+      #    "Modelling framework for single-cell RNA-seq data that can be used to dissect the observed heterogeneity into different sources, thereby allowing for the correction of confounding sources of variation" \
+      #    "-c r -c bioconda -c chasehere -c conda-forge" \
+      #    "r-irkernel  h5py=2.7.0 matplotlib=2.0.2 gpy=1.7.7 limix=0.7.12 r-rpython=0.0_6 r-statmod=1.4.29 r-gplots=3.0.1 bioconductor-deseq2=1.14.1 bioconductor-genefilter=1.58.1" \
+      #    "scLVM==0.1.8" \
+      #    "none" \
+      #    "none" \
+      #    "none"
 
-  add_algorithm limma \
-    3.30.13 \
-    "none" \
-    3.3.2 \
-    "Linear Models for Microarray and RNA-Seq Data" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
-    none \
-    none \
-    none \
-    none
-
-  # TODO -c pjones whar was that for ?
-  add_algorithm ruvseq \
-    1.8.0 \
-    "none" \
-    3.3.2 \
-    "Remove Unwanted Variation from RNA-Seq Data" \
-    "-c bioconda  -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
-    none \
-    none \
-    none \
-    none
-
-  add_algorithm \
-    scnorm \
-    0.99.7 \
-    "none" \
-    3.4.1 \
-    "Robust normalization of single-cell RNA-seq data" \
-    "-c bioconda -c r -c kurtwheeler" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 " \
-    none \
-    none \
-    none \
-    "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
-
-  # -c kurtwheeler bioconductor-biocinstaller=1.26.0
-  add_algorithm \
-    scone \
-    1.1.2 \
-    "none" \
-    3.4.1 \
-    "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
-    "-c r -c bioconda -c kurtwheeler" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
-    none \
-    "scone" \
-    none \
-    none
-
-  # TODO r-irkernel=0.7.1 OK ?
-  add_algorithm \
-    scran \
-    1.4.5 \
-    "none" \
-    3.3.2 \
-    "Implements a variety of low-level analyses of single-cell RNA-seq data" \
-    "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
-    none \
-    "scran" \
-    none \
-    none
+      #    #'/opt/conda/envs/sclvm/bin/R --no-restore --no-save -e "devtools::install_github('PMBio/scLVM')";'
+      #    # https://github.com/PMBio/scLVM/archive/V0.1.tar.gz
 
 
 
 
 
-  add_algorithm \
-    seurat \
-    2.0.0 \
-    "none" \
-    3.4.1 \
-    "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
-    "-c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9" \
-    none \
-    none \
-    "satijalab/seurat" \
-    none
 
-  add_algorithm \
-    svaseq \
-    1.8.0 \
-    "none" \
-    3.3 \
-    "Removing batch effects and other unwanted variation in high-throughput experiments" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
-    none \
-    none \
-    none \
-    none
 
-  # r-base=3.3 ?   3.4.1  !
-  add_algorithm \
-    vamf \
-    0.0.20170804 \
-    "none" \
-    3.4.1 \
-    "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
-    none \
-    none \
-    "willtownes/vamf" \
-    none
+        add_algorithm citrus \
+          0.99.0 \
+          none \
+          3.4.1 \
+          "Includes scPLS , Normalization of single cell RNA sequencing data using both control and target genes" \
+          "-c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-rcpp=0.12.11 r-rcpparmadillo=0.7.900.2.0 r-cairo=1.5_9" \
+          "none" \
+          "none" \
+          "ChenMengjie/Citrus" \
+          "none"
+
+        add_algorithm combatpy \
+          0.0.20170804 \
+          3.6.2 \
+          3.3 \
+          "Combatting batch effects when combining batches of gene expression microarray data" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1" \
+          "none" \
+          "bladderbatch" \
+          "none" \
+          "none"
+
+        add_algorithm fsclvm \
+          1.0.0.dev10 \
+          3.6.2 \
+          3.3.2 \
+          "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors" \
+          "-c defaults" \
+          "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0" \
+          "fscLVM==1.0.0.dev10" \
+          none \
+          none \
+          none
+
+        add_algorithm limma \
+          3.30.13 \
+          "none" \
+          3.3.2 \
+          "Linear Models for Microarray and RNA-Seq Data" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-limma=3.30.13" \
+          none \
+          none \
+          none \
+          none
+
+        # TODO -c pjones whar was that for ?
+        add_algorithm ruvseq \
+          1.8.0 \
+          "none" \
+          3.3.2 \
+          "Remove Unwanted Variation from RNA-Seq Data" \
+          "-c bioconda  -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
+          none \
+          none \
+          none \
+          none
+
+
+
+
+# ERROR: dependencies 'quantreg', 'cluster', 'SummarizedExperiment' are not available for package 'SCnorm'
+# bioconductor-summarizedexperiment 1.4.0* -> bioconductor-biobase -> bioconductor-biocgenerics >=0.3.2 -> r 3.2.2* -> r-base 3.2.2
+# https://bioconductor.org/packages/release/bioc/src/contrib/SummarizedExperiment_1.6.3.tar.gz
+        add_algorithm \
+          scnorm \
+          0.99.7 \
+          "none" \
+          3.4.1 \
+          "Robust normalization of single-cell RNA-seq data" \
+          "-c bioconda -c r -c kurtwheeler" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 r-quantreg=5.33 r-cluster=2.0.6" \
+          none \
+          "SummarizedExperiment" \
+          none \
+          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
+
+        # -c kurtwheeler bioconductor-biocinstaller=1.26.0
+        add_algorithm \
+          scone \
+          1.1.2 \
+          "none" \
+          3.4.1 \
+          "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
+          "-c r -c bioconda -c kurtwheeler" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
+          none \
+          "scone" \
+          none \
+          none
+
+        # TODO r-irkernel=0.7.1 OK ?
+        add_algorithm \
+          scran \
+          1.4.5 \
+          "none" \
+          3.3.2 \
+          "Implements a variety of low-level analyses of single-cell RNA-seq data" \
+          "-c r -c bioconda " \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0" \
+          none \
+          "scran" \
+          none \
+          none
+
+
+
+
+
+
+        add_algorithm \
+          svaseq \
+          1.8.0 \
+          "none" \
+          3.3 \
+          "Removing batch effects and other unwanted variation in high-throughput experiments" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
+          none \
+          none \
+          none \
+          none
+
+
+        add_algorithm \
+          vamf \
+          0.0.20170804 \
+          "none" \
+          3.4.1 \
+          "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
+          "-c bioconda -c r" \
+          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
+          none \
+          none \
+          "willtownes/vamf" \
+          none
 
   touch /opt/donewith/members_envs
 
   /opt/conda/bin/conda env export -n root > /opt/condaenvexports/root_$(date +%Y-%m-%d-%H-%M).yaml
   # cleanup ???M
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
+  #chmod --recursive --changes +755 /opt/*
   chmod --recursive --changes +755 /opt/*
 
   touch /opt/donewith/condaenvexportroot_condaclean_chmod
