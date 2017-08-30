@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Print commands and their arguments as they are executed.
+set -o xtrace
+#Exit immediately if a command exits with a non-zero status.
+# set -e
+
+
+ENVNAME=$1
+RORPYTHON=$2
+# get all arguments starting at number 3 ( 0 being the command )
+REMAINING_ARGS=${@:3}
+
+
+LD_LIBRARY_PATH=/opt/conda/envs/${ENVNAME}/lib  ${RORPYTHON}  ${REMAINING_ARGS}
+
+
+set +o xtrace
+

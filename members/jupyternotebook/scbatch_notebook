@@ -18,9 +18,16 @@
 # see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
 
 
-source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
 
-jupyter notebook --NotebookApp.ip=$(hostname --ip-address)
+#export LD_LIBRARY_PATH=/opt/conda/lib
+#source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
+
+
+#export LD_LIBRARY_PATH=/opt/conda/envs/jupyternotebook/lib
+LD_LIBRARY_PATH=/opt/conda/envs/jupyternotebook/lib \
+    /opt/conda/envs/jupyternotebook/bin/jupyter notebook \
+        --NotebookApp.ip=$(hostname --ip-address) \
+        --NotebookApp.browser='google-chrome'
 
     # --no-browser
     #--NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'

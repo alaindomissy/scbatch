@@ -147,6 +147,7 @@ From:  ubuntu:16.04
     conda create --yes --name ${NAME} ${CHANNELS} ${PYTHONPACKAGE} ${RBASEPACKAGE} ${PACKAGES}
     conda env export --name ${NAME} > /opt/condaenvexports/${NAME}_ROOTENV.yaml
 
+    ENVLIB="/opt/conda/envs/${NAME}/lib"
     ENVPYTHON="/opt/conda/envs/${NAME}/bin/python"
     ENVR="/opt/conda/envs/${NAME}/lib/R/bin/R"
     ENVPIPINSTALL="/opt/conda/envs/${NAME}/bin/pip install"
@@ -154,8 +155,8 @@ From:  ubuntu:16.04
 
     PYDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} python${PYVERSION}")                #  | sed -e 's/ /_/g'
     RDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} r${RVERSION}" )
-    PYKERNELSPEC='{"argv": ["'${ENVPYTHON}'", "-m", "ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
-    RKERNELSPEC='{"argv": ["'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
+    PYKERNELSPEC='{"argv": ["fix_ld_library_path", "'${ENVLIB}'" , "'${ENVPYTHON}'" , "-m", "ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv":  ["fix_ld_library_path", "'${ENVLIB}'" , "'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
       echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
@@ -181,11 +182,10 @@ From:  ubuntu:16.04
 
 
 
-#
-#      #  add_algorithm \
-#      #    ccremover \
 
+#      #  add_algorithm ccremover \
 
+#      #  add_algorithm biscuit \
 
 
 
@@ -275,11 +275,13 @@ From:  ubuntu:16.04
           "none" \
           "none"
 
+
+        # , thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors
         add_algorithm fsclvm \
           1.0.0.dev10 \
           3.6.2 \
           "none" \
-          "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity, thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors" \
+          "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity" \
           "-c defaults" \
           "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 ipykernel=4.6.1" \
           "fscLVM==1.0.0.dev10" \

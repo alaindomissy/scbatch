@@ -8,7 +8,8 @@
 # export SINGULARTY_BINDPATH=/some,/dirs,/to,/bind
 
 
-source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
+# WE ARE STILL OUTSIDE OF CONTAINER HERE!
+#source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
 
 DIR=$(dirname  "$0")
 CMD=$(basename "$0")
