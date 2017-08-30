@@ -145,7 +145,7 @@ From:  ubuntu:16.04
     PYTHONPACKAGE=""; if [ ${PYVERSION} != "none" ] ; then PYTHONPACKAGE="python=${PYVERSION}"; fi
     RBASEPACKAGE="" ; if [ ${RVERSION}  != "none" ] ; then RBASEPACKAGE="r-base=${RVERSION}"  ; fi
     conda create --yes --name ${NAME} ${CHANNELS} ${PYTHONPACKAGE} ${RBASEPACKAGE} ${PACKAGES}
-    conda env export --name ${NAME} > /opt/condaenvexports/${NAME}_ROOTENV.yaml
+    #conda env export --name ${NAME} > /opt/condaenvexports/${NAME}_ROOTENV.yaml
 
     ENVLIB="/opt/conda/envs/${NAME}/lib"
     ENVPYTHON="/opt/conda/envs/${NAME}/bin/python"
@@ -315,30 +315,30 @@ From:  ubuntu:16.04
 #    "none"
 
 
-  add_algorithm combatpy \
-    0.0.20170804 \
-    3.6.2 \
-    3.3 \
-    "Combatting batch effects when combining batches of gene expression microarray data" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 ipykernel=4.6.1" \
-    none \
-    "bladderbatch" \
-    none \
-    none
-
-  # , thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors
-  add_algorithm fsclvm \
-    1.0.0.dev10 \
-    3.6.2 \
-    none \
-    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity" \
-    "-c defaults" \
-    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 ipykernel=4.6.1" \
-    "fscLVM==1.0.0.dev10" \
-    none \
-    none \
-    none
+#  add_algorithm combatpy \
+#    0.0.20170804 \
+#    3.6.2 \
+#    3.3 \
+#    "Combatting batch effects when combining batches of gene expression microarray data" \
+#    "-c bioconda -c r" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 bioconductor-sva=3.20.0 pandas=0.20.3 patsy=0.4.1 ipykernel=4.6.1" \
+#    none \
+#    "bladderbatch" \
+#    none \
+#    none
+#
+#  # , thereby allowing to identify biological drivers of cell-to-cell variability and model confounding factors
+#  add_algorithm fsclvm \
+#    1.0.0.dev10 \
+#    3.6.2 \
+#    none \
+#    "Scalable modelling framework for single-cell RNA-seq data that uses gene set annotations to dissect single-cell transcriptome heterogeneity" \
+#    "-c defaults" \
+#    "r-argparse=1.0.4 r-devtools=1.12.0 scipy=0.19.1 h5py=2.7.0 numpy=1.13.1 matplotlib=2.0.2 scikit-learn=0.19.0 ipykernel=4.6.1" \
+#    "fscLVM==1.0.0.dev10" \
+#    none \
+#    none \
+#    none
 
   add_algorithm limma \
     3.30.13 \
@@ -351,129 +351,129 @@ From:  ubuntu:16.04
     none \
     none \
     none
-
-  # TODO -c pjones whar was that for ?
-  add_algorithm ruvseq \
-    1.8.0 \
-    none \
-    3.3.2 \
-    "Remove Unwanted Variation from RNA-Seq Data" \
-    "-c bioconda  -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
-    none \
-    none \
-    none \
-    none
-
-
-
-
-# ERROR: dependencies 'quantreg', 'cluster', 'SummarizedExperiment' are not available for package 'SCnorm'
-# bioconductor-summarizedexperiment 1.4.0* -> bioconductor-biobase -> bioconductor-biocgenerics >=0.3.2 -> r 3.2.2* -> r-base 3.2.2
-# https://bioconductor.org/packages/release/bioc/src/contrib/SummarizedExperiment_1.6.3.tar.gz
-#        add_algorithm scnorm \
-#          0.99.7 \
-#          "none" \
-#          3.4.1 \
-#          "Robust normalization of single-cell RNA-seq data" \
-#          "-c bioconda -c r -c kurtwheeler" \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 r-quantreg=5.33 r-cluster=2.0.6" \
-#          none \
-#          "SummarizedExperiment" \
-#          none \
-#          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
-
-
-
-# -c kurtwheeler bioconductor-biocinstaller=1.26.0
-#        add_algorithm scone \
-#          1.1.2 \
-#          "none" \
-#          3.4.1 \
-#          "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
-#          "-c r -c bioconda -c kurtwheeler" \
-#          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
-#          none \
-#          "scone" \
-#          none \
-#          none
-
-
-
-  add_algorithm scran \
-    1.4.5 \
-    none \
-    3.3.2 \
-    "Includes mnnCorrect. Implements a variety of low-level analyses of single-cell RNA-seq data" \
-    "-c r -c bioconda " \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 bioconductor-biocstyle=2.0.3" \
-    none \
-    "scran" \
-    none \
-    none
-
-
-
-
-####  TODO  seurat needs to do URL before GITHUB
-
-#    # 3.4.1
-#    # r-fpc 2.1_10* -> r-base 3.3.2*
-#    # r-devtools=1.13.2
-##############################################################################################
-#    # r-compositions  https://cran.r-project.org/src/contrib/compositions_1.40-1.tar.gz
-#    # r-diffusionMap  https://cran.r-project.org/src/contrib/diffusionMap_1.1-0.tar.gz
-##############################################################################################
-#    # -c bioconda r-fpc=2.1_10
 #
-#    #During startup - Warning messages:
-#    #1: Setting LC_CTYPE failed, using "C"
-#    #2: Setting LC_TIME failed, using "C"
-#    #3: Setting LC_MESSAGES failed, using "C"
-#    #4: Setting LC_MONETARY failed, using "C"
-#    #5: Setting LC_PAPER failed, using "C"
-#    #6: Setting LC_MEASUREMENT failed, using "C"
-#      add_algorithm seurat \
-#        2.0.0 \
-#        "none" \
-#        3.3.2\
-#        "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
-#        "-c r -c bioconda" \
-#        "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9 r-ROCR r-lars=1.2 r-fpc=2.1_10 r-ape=4.0 r-VGAM=1.0_2 r-igraph=1.0.1 r-caret=6.0_73 r-gplots=3.0.1  r-NMF=0.20.6 r-plotly=4.5.6  r-Hmisc" \
-#        none \
-#        none \
-#        "satijalab/seurat" \
-#        "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
-
-
-
-
-
-
-  add_algorithm svaseq \
-    1.8.0 \
-    none \
-    3.3 \
-    "Removing batch effects and other unwanted variation in high-throughput experiments" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
-    none \
-    none \
-    none \
-    none
-
-
-  add_algorithm vamf \
-    0.0.20170804 \
-    none \
-    3.4.1 \
-    "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing. Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data" \
-    "-c bioconda -c r" \
-    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
-    none \
-    none \
-    "willtownes/vamf" \
-    none
+#  # TODO -c pjones whar was that for ?
+#  add_algorithm ruvseq \
+#    1.8.0 \
+#    none \
+#    3.3.2 \
+#    "Remove Unwanted Variation from RNA-Seq Data" \
+#    "-c bioconda  -c r" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-edger=3.16.5 bioconductor-edaseq=2.8.0 bioconductor-ruvseq=1.10.0" \
+#    none \
+#    none \
+#    none \
+#    none
+#
+#
+#
+#
+## ERROR: dependencies 'quantreg', 'cluster', 'SummarizedExperiment' are not available for package 'SCnorm'
+## bioconductor-summarizedexperiment 1.4.0* -> bioconductor-biobase -> bioconductor-biocgenerics >=0.3.2 -> r 3.2.2* -> r-base 3.2.2
+## https://bioconductor.org/packages/release/bioc/src/contrib/SummarizedExperiment_1.6.3.tar.gz
+##        add_algorithm scnorm \
+##          0.99.7 \
+##          "none" \
+##          3.4.1 \
+##          "Robust normalization of single-cell RNA-seq data" \
+##          "-c bioconda -c r -c kurtwheeler" \
+##          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9 r-quantreg=5.33 r-cluster=2.0.6" \
+##          none \
+##          "SummarizedExperiment" \
+##          none \
+##          "https://bioconductor.org/packages/devel/bioc/src/contrib/SCnorm_0.99.7.tar.gz"
+#
+#
+#
+## -c kurtwheeler bioconductor-biocinstaller=1.26.0
+##        add_algorithm scone \
+##          1.1.2 \
+##          "none" \
+##          3.4.1 \
+##          "Comparing and ranking the performance of different normalization schemes for single-cell RNA-seq and other high-throughput analyses" \
+##          "-c r -c bioconda -c kurtwheeler" \
+##          "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.26.0 r-cairo=1.5_9" \
+##          none \
+##          "scone" \
+##          none \
+##          none
+#
+#
+#
+#  add_algorithm scran \
+#    1.4.5 \
+#    none \
+#    3.3.2 \
+#    "Includes mnnCorrect. Implements a variety of low-level analyses of single-cell RNA-seq data" \
+#    "-c r -c bioconda " \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.12.0 bioconductor-biocinstaller=1.24.0 r-knitr=1.15.1 r-xml=3.98_1.5 r-httpuv=1.3.3 r-shiny=0.14.2 r-shinydashboard=0.5.3 bioconductor-biomart=2.28.0 bioconductor-biocstyle=2.0.3" \
+#    none \
+#    "scran" \
+#    none \
+#    none
+#
+#
+#
+#
+#####  TODO  seurat needs to do URL before GITHUB
+#
+##    # 3.4.1
+##    # r-fpc 2.1_10* -> r-base 3.3.2*
+##    # r-devtools=1.13.2
+###############################################################################################
+##    # r-compositions  https://cran.r-project.org/src/contrib/compositions_1.40-1.tar.gz
+##    # r-diffusionMap  https://cran.r-project.org/src/contrib/diffusionMap_1.1-0.tar.gz
+###############################################################################################
+##    # -c bioconda r-fpc=2.1_10
+##
+##    #During startup - Warning messages:
+##    #1: Setting LC_CTYPE failed, using "C"
+##    #2: Setting LC_TIME failed, using "C"
+##    #3: Setting LC_MESSAGES failed, using "C"
+##    #4: Setting LC_MONETARY failed, using "C"
+##    #5: Setting LC_PAPER failed, using "C"
+##    #6: Setting LC_MEASUREMENT failed, using "C"
+##      add_algorithm seurat \
+##        2.0.0 \
+##        "none" \
+##        3.3.2\
+##        "QC , analysis , and exploration of single cell RNA-seq data. Identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data" \
+##        "-c r -c bioconda" \
+##        "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 r-cairo=1.5_9 r-ROCR r-lars=1.2 r-fpc=2.1_10 r-ape=4.0 r-VGAM=1.0_2 r-igraph=1.0.1 r-caret=6.0_73 r-gplots=3.0.1  r-NMF=0.20.6 r-plotly=4.5.6  r-Hmisc" \
+##        none \
+##        none \
+##        "satijalab/seurat" \
+##        "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
+#
+#
+#
+#
+#
+#
+#  add_algorithm svaseq \
+#    1.8.0 \
+#    none \
+#    3.3 \
+#    "Removing batch effects and other unwanted variation in high-throughput experiments" \
+#    "-c bioconda -c r" \
+#    "r-argparse=1.0.4 r-irkernel r-devtools=1.12.0 bioconductor-sva=3.20.0" \
+#    none \
+#    none \
+#    none \
+#    none
+#
+#  #  Removes batch effects in a real dataset without using labels and detects biological groups despite variable censoring in simulated data
+#  add_algorithm vamf \
+#    0.0.20170804 \
+#    none \
+#    3.4.1 \
+#    "Varying-Censoring Aware Matrix Factorization for Single Cell RNA-Sequencing." \
+#    "-c bioconda -c r" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2 bioconductor-biocinstaller=1.22.3 r-rstan=2.15.1 r-cairo=1.5_9" \
+#    none \
+#    none \
+#    "willtownes/vamf" \
+#    none
 
   touch /opt/donewith/members_envs
 
@@ -571,12 +571,12 @@ From:  ubuntu:16.04
     #mkdir -p commands
     #mv scbatch ./commands/
     #cd commands
-    ln -sf scbatch scbatch_activate
+    #ln -sf scbatch scbatch_activate
     ln -sf scbatch scbatch_getdataset
-    ln -sf scbatch scbatch_getreference
+    #ln -sf scbatch scbatch_getreference
     ln -sf scbatch scbatch_notebook
-    ln -sf scbatch scbatch_setpassword
-    ln -sf scbatch scbatch_setconfig
+    #ln -sf scbatch scbatch_setpassword
+    #ln -sf scbatch scbatch_setconfig
     #cd -
 
     echo
