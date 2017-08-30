@@ -1,9 +1,14 @@
 #!/bin/bash
 
+
+# set -x
+
+
 # if you want to bind some host directories...
 # export SINGULARTY_BINDPATH=/some,/dirs,/to,/bind
 
-# set -x
+
+source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
 
 DIR=$(dirname  "$0")
 CMD=$(basename "$0")

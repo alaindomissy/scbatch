@@ -12,14 +12,13 @@
 #set -o pipefail
 
 
-#jupyter notebook --NotebookApp.port=8754
-
 
 #scbatch_setconfig
 
 # see: http://testnb.readthedocs.io/en/stable/examples/Notebook/Configuring%20the%20Notebook%20and%20Server.html
 
-#source /opt/conda/envs/notebook/bin/activate jupyternotebook
+
+source /opt/conda/envs/jupyternotebook/bin/activate jupyternotebook
 
 jupyter notebook --NotebookApp.ip=$(hostname --ip-address)
 

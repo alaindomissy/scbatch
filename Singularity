@@ -425,7 +425,7 @@ From:  ubuntu:16.04
   touch /opt/donewith/members_envs
 
   /opt/conda/bin/conda env export -n root > /opt/condaenvexports/root_$(date +%Y-%m-%d-%H-%M).yaml
-  # cleanup ???M
+  # cleanup 666MB
   /opt/conda/bin/conda clean --index-cache --tarballs --packages --yes
   #chmod --recursive --changes +755 /opt/*
   chmod --recursive +755 /opt/*
@@ -464,6 +464,9 @@ From:  ubuntu:16.04
   JUPYTER_PATH=/opt/conda/envs/jupyternotebook/share/jupyter
   export JUPYTER_PATH
 
+  KERNELS=${JUPYTER_PATH}/kernels
+  export KERNELS
+
   alias echopathtr='echo $PATH | tr ":" "\n"'
   alias ll='ls -lhF'
 
@@ -489,9 +492,9 @@ From:  ubuntu:16.04
   # this will get copied to /.singularity.d/runscript indide the container
   # which will run whenever the container is called as an executable
 
-  echo "======================================================================"
-  echo "container image downloaded, now setting shortcuts"
-  echo "======================================================================"
+  echo ========================================================================
+  echo container image downloaded, now setting shortcuts
+  echo ========================================================================
 
   #set -o xtrace
   set -o nounset
@@ -500,7 +503,6 @@ From:  ubuntu:16.04
 
   if [ $# -eq 0 ]
   then
-
       IDATE=$(date -Iseconds)
       # IDATE=$(date -Iseconds | tr "\:" "-" | tr "T" "+")
 
@@ -509,8 +511,8 @@ From:  ubuntu:16.04
       ln -sf ${IMAGENAME} scbatch.img
 
 
-     cp -r /opt/patches/demos   ./demos
-     cp -r ${KERNELS}           ./kernels
+     cp -r /opt/demos   ./
+     cp -r ${KERNELS}   ./
 
       cp /opt/patches/scripts/*   ./
       #mv ./scbatchrc              ./.scbatchrc
@@ -527,23 +529,22 @@ From:  ubuntu:16.04
       #cd -
 
       echo
-      echo ======================
-      echo please type:
+      echo ====================================================================
+      echo please:
       echo
-      echo        source scbatchrc
+      echo     type:  "source ./scbatchrc" to add scbatch_notebook to your PATH
+      echo     type:  "scbatch_notebook" to start the jupyter server
       echo
-      echo and enjoy scbatch!
-      echo ======================
+      echo Enjoy scbatch!
+      echo ====================================================================
       echo
 
-#      mkdir TEST
-#      cd TEST
-       scbatch_notebook
+       # scbatch_notebook
 
   else
       echo "scbatch image called with run and some arguments - did you mean to exec instead ?"
   fi
-###############################################################################
+  ###############################################################################
 %test
 
   # /opt/tests/test
