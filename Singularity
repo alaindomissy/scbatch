@@ -155,8 +155,8 @@ From:  ubuntu:16.04
 
     PYDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} python${PYVERSION}")                #  | sed -e 's/ /_/g'
     RDISPLAYNAME=$(echo "${NAME} ${DESCRIPTION} v${VERSION} r${RVERSION}" )
-    PYKERNELSPEC='{"argv": ["fix_ld_library_path", "'${ENVLIB}'" , "'${ENVPYTHON}'" , "-m", "ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
-    RKERNELSPEC='{"argv":  ["fix_ld_library_path", "'${ENVLIB}'" , "'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
+    PYKERNELSPEC='{"argv": ["fix_ld_library_path", "'${NAME}'" , "'${ENVPYTHON}'" , "-m", "ipykernel_launcher", "-f", "{connection_file}"], "display_name":"'${PYDISPLAYNAME}'", "language":"python"}'
+    RKERNELSPEC='{"argv":  ["fix_ld_library_path", "'${NAME}'" , "'${ENVR}'", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"], "display_name":"'${RDISPLAYNAME}'", "language":"R"}'
     if [ ${PYVERSION} != "none" ] ; then
       cp -r  /opt/patches/jupyter/kernels/python3 ${KERNELS}/"${NAME}_python"
       echo "${PYKERNELSPEC}" > ${KERNELS}/"${NAME}_python"/kernel.json
@@ -251,9 +251,37 @@ From:  ubuntu:16.04
 
 
 
-
+#      # https://github.com/sandhya212/BISCUIT_SingleCell_IMM_ICML_2016
 #      # https://genomicscomputbiol.org/ojs/index.php/GCB/article/view/46
 #      #  add_algorithm biscuit \
+#  add_algorithm biscuit \
+#    0.0.20170829 \
+#    none \
+#    3.4.1  \
+#    "Infinite Mixture Model to cluster and impute single cells"  \
+#    "-c r" \
+#    "r-argparse=1.0.4 r-irkernel=0.7.1 r-devtools=1.13.2     MCMCpack r-mvtnorm r-ellipse r-coda r-Matrix r-Rtsne r-gtools r-foreach r-doParallel r-doSNOW r-snow r-lattice r-MASS r-bayesm r-robustbase r-chron r-mnormt r-schoolmath r-devtools r-RColorBrewer   " \
+#    none \
+#    none \
+#    none \
+#    none
+
+
+
+# Bayesian Regression Models using Stan
+# brms=1.9.0
+# https://cran.r-project.org/src/contrib/brms_1.9.0.tar.gz
+#  add_algorithm pystan \
+#    2.15.0.1 \
+#    3.6.2 \
+#    none  \
+#    none  \
+#    "-c conda-forge" \
+#    "pystan=2.15.0.1" \
+#    none \
+#    none \
+#    none \
+#    none
 
 
 
@@ -567,7 +595,7 @@ From:  ubuntu:16.04
   else
       echo "scbatch image called with run and some arguments - did you mean to exec instead ?"
   fi
-  
+
  ####
 %test
  ####
