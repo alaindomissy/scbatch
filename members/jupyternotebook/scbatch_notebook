@@ -27,7 +27,7 @@
 LD_LIBRARY_PATH=/opt/conda/envs/jupyternotebook/lib \
     /opt/conda/envs/jupyternotebook/bin/jupyter notebook \
         --NotebookApp.ip=$(hostname --ip-address) \
-        --NotebookApp.browser='google-chrome'
+        --no-browser
 
-    # --no-browser
+    #--NotebookApp.browser='google-chrome'
     #--NotebookApp.password=u'sha1:1755c2b99a1c:0b4d6d2c9e14a6218dde77bfbfb15d9062867dc9'
