@@ -12,7 +12,7 @@ RORPYTHON=$2
 REMAINING_ARGS=${@:3}
 
 
-LD_LIBRARY_PATH=/opt/conda/envs/${ENVNAME}/lib  ${RORPYTHON}  ${REMAINING_ARGS}
+LD_LIBRARY_PATH=/opt/conda/envs/${ENVNAME}/lib:/opt/conda/envs/${ENVNAME}/lib/R/lib  ${RORPYTHON}  ${REMAINING_ARGS}
 
 
 set +o xtrace
