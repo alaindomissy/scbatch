@@ -611,13 +611,13 @@ From: ubuntu:16.04
     echo "===================================================================="
     echo "to complete this installation, please type:"
     echo
-    echo "                     source SOURCEME                                "
+    echo "                     source SOURCEME"
     echo
     echo "to start jupyter, please type:"
     echo
-    echo "                     scbatch_notebook
+    echo "                     scbatch_notebook"
     echo
-    echo "Enjoy single-cell batcheffects !  "
+    echo "Enjoy single-cell batcheffects !"
     echo "===================================================================="
     echo
 
