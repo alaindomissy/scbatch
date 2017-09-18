@@ -1,5 +1,11 @@
-BootStrap: docker
-From: ubuntu:16.04
+Bootstrap: debootstrap
+MirrorURL: http://us.archive.ubuntu.com/ubuntu
+OSVersion: xenial
+
+
+#BootStrap: docker
+#From: ubuntu:16.04
+
 
   ####
 %setup
@@ -12,6 +18,7 @@ From: ubuntu:16.04
       echo "Hrmm, this container does not have /bin/sh installed..."
       exit 1
   fi
+
 
   # for SDSC mounts
   mkdir -p $SINGULARITY_ROOTFS/oasis/tscc/scratch
@@ -28,7 +35,7 @@ From: ubuntu:16.04
   # for West Virginia University mounts
   mkdir -p $SINGULARITY_ROOTFS/users
   mkdir -p $SINGULARITY_ROOTFS/gpfs
-  mkdir -p $SINGULARITY_ROOTFS/groups
+  mkdir -p $SINGULARITY_ROOTFS/group
 
   # for Alain's laptop
   mkdir -p $SINGULARITY_ROOTFS/media/mis
@@ -48,9 +55,9 @@ From: ubuntu:16.04
 
   cp -r ./demos/*    $SINGULARITY_ROOTFS/opt/demos/
 
-  ###
-%post
-  ###
+  ################
+%post -c /bin/bash
+  ################
   # running post scriptlet
   # this is run inside the container to install all necessary packages
 
@@ -59,12 +66,51 @@ From: ubuntu:16.04
   # set -o errexit
   # set -o pipefail
 
+
+
   # ubuntu does not have bash in /usr/bin/env ??
   ln -s /bin/bash /usr/bin/bash
 
+  ##############
+  # UBUNTU NAKED
+
+  export LC_ALL=C
+
+  apt-get -y install ubuntu-standard
+  apt-get -y install ubuntu-server
+
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION} main"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION} universe"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION} multiverse"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION} restricted"
+
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-updates main"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-updates universe"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-updates multiverse"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-updates restricted"
+
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-backports main"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-backports universe"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-backports multiverse"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-backports restricted"
+
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-security main"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-security universe"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-security multiverse"
+  add-apt-repository -y "deb ${MIRRORURL} ${OSVERSION}-security restricted"
+
+  apt-get -y update && apt-get -y upgrade
+
+  echo "======================================================================"
+  touch /opt/donewith/ubuntu_naked
+  echo "======================================================================"
+
+
+
   ########
   # UBUNTU
-  apt-get -y update
+
+  #apt-get -y update
   apt-get -y install make gcc g++ zlib1g-dev libncurses5-dev nano unzip
   apt-get install -y xorg
   # cleanup   x? M
@@ -74,7 +120,10 @@ From: ubuntu:16.04
   # fix for /bin/gtar: not found when running devtools::install_git()
   ln -s /bin/tar /bin/gtar
 
+  echo "======================================================================"
   touch /opt/donewith/ubuntu
+  echo "======================================================================"
+
 
   ###########
   # MINICONDA  # instead of having: From: continuumio/miniconda:4.3.11
@@ -523,7 +572,9 @@ From: ubuntu:16.04
   set +x
 
 
+  ##########
 %environment
+  ##########
 
   PATH="/opt/conda/bin:$PATH"
   PATH="/opt/conda/envs/jupyternotebook/bin:$PATH"
@@ -558,13 +609,26 @@ From: ubuntu:16.04
   alias echopathtr='echo $PATH | tr ":" "\n"'
   alias ll='ls -lhF'
 
- ######
+  #####
 %labels
- ######
+  #####
 
   MAINTAINER alaindomissy@gmail.com
   VERSION 0.0.1-20170827
   BUILD_DATE "${date -Iminutes}"
+
+  #    AUTHOR_NAME Marty Kandes
+  #    AUTHOR_EMAIL mkandes@sdsc.edu
+  #    APPLICATION_NAME none
+  #    APPLICATION_VERSION none
+  #    APPLICATION_URL none
+  #    SYSTEM_NAME comet
+  #    SYSTEM_SINGULARITY_VERSION 2.3.1
+  #    SYSTEM_URL http://www.sdsc.edu/support/user_guides/comet.html
+  #    VERSION 0.0.5
+  #    LAST_UPDATED 20170811
+
+
 
   ####
 %files
