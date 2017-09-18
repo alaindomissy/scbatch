@@ -1,5 +1,5 @@
 BootStrap: docker
-From:  ubuntu:16.04
+From: ubuntu:16.04
 
   ####
 %setup
@@ -13,13 +13,26 @@ From:  ubuntu:16.04
       exit 1
   fi
 
+  # for SDSC mounts
   mkdir -p $SINGULARITY_ROOTFS/oasis/tscc/scratch
   mkdir -p $SINGULARITY_ROOTFS/projects/ps-yeolab
   mkdir -p $SINGULARITY_ROOTFS/projects/ps-yeolab3
   mkdir -p $SINGULARITY_ROOTFS/projects/ps-scrm
   mkdir -p $SINGULARITY_ROOTFS/oasis/projects/nsf
 
+  # for Cincinnati Children's Hospital mounts
+  mkdir -p $SINGULARITY_ROOTFS/users
+  mkdir -p $SINGULARITY_ROOTFS/data
+  mkdir -p $SINGULARITY_ROOTFS/scratch
+
+  # for West Virginia University mounts
+  mkdir -p $SINGULARITY_ROOTFS/users
+  mkdir -p $SINGULARITY_ROOTFS/gpfs
+  mkdir -p $SINGULARITY_ROOTFS/groups
+
+  # for Alain's laptop
   mkdir -p $SINGULARITY_ROOTFS/media/mis
+
 
   mkdir -p $SINGULARITY_ROOTFS/opt/condaenvexports
   mkdir -p $SINGULARITY_ROOTFS/opt/donewith
@@ -383,6 +396,7 @@ From:  ubuntu:16.04
 #
 #
 ## -c kurtwheeler bioconductor-biocinstaller=1.26.0
+####################################################
 #  add_algorithm scone \
 #    1.1.2 \
 #    "none" \
@@ -443,6 +457,30 @@ From:  ubuntu:16.04
 #    none \
 #    "satijalab/seurat" \
 #    "https://cran.r-project.org/src/contrib/tclust_1.3-1.tar.gz"
+
+
+
+#
+#UnsatisfiableError: The following specifications were found to be in conflict:
+#  - r-base 3.4.1*
+#  - r-caret 6.0_73* -> r-base 3.3.2*
+#- r-vgam 1.0_2* -> r-base 3.3.1*
+# - r-vgam 1.0_2* -> r-base 3.3.1*
+
+#
+#UnsatisfiableError: The following specifications were found to be in conflict:
+#  - r-devtools 1.13.2*
+#  - r-fpc 2.1_10*
+#
+
+#UnsatisfiableError: The following specifications were found to be in conflict:
+#  - r-devtools 1.13.2*
+#  - r-fpc
+
+#UnsatisfiableError: The following specifications were found to be in conflict:
+#  - r-devtools 1.13.2*
+#  - r-plotly 4.5.6*
+
 
 
 
@@ -569,17 +607,20 @@ From:  ubuntu:16.04
     ln -sf batcheffects scbatch_getdataset
     ln -sf batcheffects scbatch_notebook
 
+    echo
+    echo "===================================================================="
+    echo "to complete this installation, please type:"
+    echo
+    echo "                     source SOURCEME                                "
+    echo
+    echo "to start jupyter, please type:"
+    echo
+    echo "                     scbatch_notebook
+    echo
+    echo "Enjoy single-cell batcheffects !  "
+    echo "===================================================================="
+    echo
 
-    echo
-    echo ====================================================================
-    echo please:
-    echo
-    echo     type:  "source ./scbatchrc" to add scbatch_notebook to your PATH
-    echo     type:  "scbatch_notebook" to start the jupyter server
-    echo
-    echo Enjoy batcheffects!
-    echo ====================================================================
-    echo
 
     # scbatch_notebook
 
